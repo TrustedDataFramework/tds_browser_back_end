@@ -1,0 +1,30 @@
+version: '3'
+services:
+
+  eureka-server:
+    image: wisdomchain/eureka-server:latest
+    container_name: eureka-server
+    restart: always
+    hostname: eureka-server
+    ports:
+      - 8761:8761
+    environment:
+      HOST_NAME: 'eureka-server'
+
+  sync-service:
+    image: wisdomchain/sync-service:latest
+    container_name: sync-service
+    restart: always
+    ports:
+      - 9092:9092
+    environment:
+      EUREKA_SERVICE_URL: 'http://eureka-server:8761'
+
+  tds-web:
+    image: wisdomchain/tds-web:latest
+    container_name: tds-web
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      EUREKA_SERVICE_URL: 'http://eureka-server:8761'
