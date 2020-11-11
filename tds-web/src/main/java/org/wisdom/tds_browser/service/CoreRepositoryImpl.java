@@ -44,8 +44,8 @@ public class CoreRepositoryImpl implements CoreRepository {
 
     @Override
     public String getBinaryByABI(String abi) {
-        Optional<ContractEntity> optional = contractDao.findByAbi(abi);
-        return optional.map(contractEntity -> contractEntity.binary).orElse(null);
+        Optional<ContractEntity> optional = contractDao.findByAbi(abi.getBytes());
+        return optional.map(contractEntity -> Hex.encodeHexString(contractEntity.binary)).orElse(null);
     }
 
     @Override

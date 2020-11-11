@@ -18,7 +18,7 @@ public class ContractEntity {
 
     static final String TABLE_CONTRACT = "contract";
     static final String COLUMN_HEIGHT = "height";
-    static final String COLUMN_BINARY = "binary";
+    static final String COLUMN_BINARY = "[binary]";
     static final String COLUMN_ABI = "abi";
     static final String COLUMN_CREATED_AT = "created_at";
     static final String COLUMN_TX_TO = "[to]";
@@ -35,11 +35,11 @@ public class ContractEntity {
     public String txHash;
 
 
-    @Column(name = COLUMN_BINARY, nullable = false)
-    public String binary;
+    @Column(name = COLUMN_BINARY, nullable = false, length = Short.MAX_VALUE)
+    public byte[] binary;
 
     @Column(name = COLUMN_ABI, nullable = false)
-    public String abi;
+    public byte[] abi;
 
     @Column(name = COLUMN_HEIGHT, nullable = false)
     public long height;

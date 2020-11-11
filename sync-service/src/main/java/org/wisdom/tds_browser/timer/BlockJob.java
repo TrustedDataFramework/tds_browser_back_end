@@ -130,8 +130,8 @@ public class BlockJob {
                         List<ContractABI.ContractABIJson> list = abi.stream().map(ContractABI::toJSON).collect(Collectors.toList());
                         contractDao.save(ContractEntity.builder()
                                 .address(contractAddress)
-                                .abi(JSON.toJSONString(list))
-                                .binary(Hex.encodeHexString(binary))
+                                .abi(JSON.toJSONString(list).getBytes())
+                                .binary(binary)
                                 .from(transaction.getFrom().toHex())
                                 .to(transaction.getTo().toHex())
                                 .amount(transaction.getAmount().longValue())
