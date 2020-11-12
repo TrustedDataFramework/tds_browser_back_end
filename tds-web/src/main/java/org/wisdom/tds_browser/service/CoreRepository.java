@@ -1,9 +1,11 @@
 package org.wisdom.tds_browser.service;
 
-import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 import org.wisdom.tds_browser.bean.Block;
 import org.wisdom.tds_browser.bean.Contract;
+import org.wisdom.tds_browser.bean.Pair;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface CoreRepository {
@@ -21,4 +23,8 @@ public interface CoreRepository {
     List<Block.Transaction> getTransactionByFrom(String from);
 
     List<Block.Transaction> getTransactionByTo(String to);
+
+    Pair<Boolean, String> getABIByAddress(String address);
+
+    Pair<Boolean, String> uploadContractCode(MultipartFile uploadFile, String address) throws IOException;
 }

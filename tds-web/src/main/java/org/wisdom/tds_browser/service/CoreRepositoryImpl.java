@@ -3,8 +3,10 @@ package org.wisdom.tds_browser.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import org.wisdom.tds_browser.bean.Block;
 import org.wisdom.tds_browser.bean.Contract;
+import org.wisdom.tds_browser.bean.Pair;
 import org.wisdom.tds_browser.dao.ContractDao;
 import org.wisdom.tds_browser.dao.HeaderDao;
 import org.wisdom.tds_browser.dao.TransactionDao;
@@ -13,6 +15,7 @@ import org.wisdom.tds_browser.entity.HeaderEntity;
 import org.wisdom.tds_browser.entity.TransactionEntity;
 import org.wisdom.tds_browser.tool.NodeTool;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -127,10 +130,28 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
+    public Pair<Boolean, String> getABIByAddress(String address) {
+        Optional<ContractEntity> optional = contractDao.findByAddress(address);
+        return optional.map(contractEntity -> Pair.with(true, new String(contractEntity.abi))).orElseGet(() -> Pair.with(false, "contract address is not exist"));
+    }
+
+    @Override
+    public Pair<Boolean, String> uploadContractCode(MultipartFile uploadFile, String address) throws IOException {
+        Optional<ContractEntity> entity = contractDao.findByAddress(address);
+        if (!entity.isPresent()) {
+            return Pair.with(false, "contract address is not exist");
+        }
+        ContractEntity contractEntity = entity.get();
+        contractEntity.code = uploadFile.getBytes();
+        contractDao.save(contractEntity);
+        return Pair.with(true, null);
+    }
+
+    @Override
     public Block.Transaction getTransactionByTxHash(String txHash) {
         Optional<TransactionEntity> op = transactionDao.findById(txHash);
         if (!op.isPresent()) return null;
-        TransactionEntity x =op.get();
+        TransactionEntity x = op.get();
         return Block.Transaction.builder()
                 .amount(x.amount)
                 .from(x.from)

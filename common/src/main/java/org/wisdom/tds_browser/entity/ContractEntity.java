@@ -24,6 +24,7 @@ public class ContractEntity {
     static final String COLUMN_TX_TO = "[to]";
     static final String COLUMN_TX_FROM = "[from]";
     static final String COLUMN_TX_HASH = "tx_hash";
+    static final String COLUMN_CODE = "code";
     static final String COLUMN_ADDRESS = "address";
     static final String COLUMN_TX_AMOUNT = "amount";
 
@@ -40,6 +41,9 @@ public class ContractEntity {
 
     @Column(name = COLUMN_ABI, nullable = false)
     public byte[] abi;
+
+    @Column(name = COLUMN_CODE, length = Short.MAX_VALUE)
+    public byte[] code;
 
     @Column(name = COLUMN_HEIGHT, nullable = false)
     public long height;

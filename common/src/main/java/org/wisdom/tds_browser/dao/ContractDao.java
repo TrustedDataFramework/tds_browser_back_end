@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ContractDao extends JpaRepository<ContractEntity, String> {
 
     Optional<ContractEntity> findByAbi(byte[] abi);
+
+    Optional<ContractEntity> findByAddress(String address);
 }
