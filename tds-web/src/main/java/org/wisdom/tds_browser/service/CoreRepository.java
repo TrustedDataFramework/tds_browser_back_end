@@ -1,6 +1,8 @@
 package org.wisdom.tds_browser.service;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
+import org.wisdom.tds_browser.bean.Abi;
 import org.wisdom.tds_browser.bean.Block;
 import org.wisdom.tds_browser.bean.Contract;
 import org.wisdom.tds_browser.bean.Pair;
@@ -24,7 +26,7 @@ public interface CoreRepository {
 
     List<Block.Transaction> getTransactionByTo(String to);
 
-    Pair<Boolean, String> getABIByAddress(String address);
+    Pair<Boolean, Abi> getABIByAddress(String address);
 
     Pair<Boolean, String> uploadContractCode(MultipartFile uploadFile, String address) throws IOException;
 

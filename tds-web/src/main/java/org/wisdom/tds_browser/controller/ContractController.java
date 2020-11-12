@@ -1,9 +1,11 @@
 package org.wisdom.tds_browser.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.wisdom.tds_browser.bean.Abi;
 import org.wisdom.tds_browser.bean.Block;
 import org.wisdom.tds_browser.bean.Contract;
 import org.wisdom.tds_browser.bean.Pair;
@@ -27,12 +29,12 @@ public class ContractController {
 
     @GetMapping("/get_abi_by_address")
     @ResponseBody
-    public APIResult<String> getABIByAddress(@RequestParam(value = "address") String address) {
-        Pair<Boolean, String> pair = coreRepository.getABIByAddress(address);
+    public APIResult<Abi> getABIByAddress(@RequestParam(value = "address") String address) {
+        Pair<Boolean, Abi> pair = coreRepository.getABIByAddress(address);
         if (pair.key) {
             return APIResult.newSuccess(pair.value);
         }
-        return APIResult.newFailed(pair.value);
+        return APIResult.newFailed(null);
     }
 
     @RequestMapping(value = "/upload_contract_code", method = RequestMethod.POST)

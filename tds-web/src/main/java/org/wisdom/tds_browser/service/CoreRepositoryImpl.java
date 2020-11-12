@@ -1,9 +1,11 @@
 package org.wisdom.tds_browser.service;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import org.wisdom.tds_browser.bean.Abi;
 import org.wisdom.tds_browser.bean.Block;
 import org.wisdom.tds_browser.bean.Contract;
 import org.wisdom.tds_browser.bean.Pair;
@@ -130,9 +132,9 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
-    public Pair<Boolean, String> getABIByAddress(String address) {
+    public Pair<Boolean, Abi> getABIByAddress(String address) {
         Optional<ContractEntity> optional = contractDao.findByAddress(address);
-        return optional.map(contractEntity -> Pair.with(true, new String(contractEntity.abi))).orElseGet(() -> Pair.with(false, "contract address is not exist"));
+        return optional.map(contractEntity -> Pair.with(true, Abi.builder().abi(JSONObject.parse(new String(contractEntity.abi))).build())).orElseGet(() -> Pair.with(false, null));
     }
 
     @Override
