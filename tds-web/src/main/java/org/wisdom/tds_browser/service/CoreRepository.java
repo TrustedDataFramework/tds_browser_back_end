@@ -27,4 +27,10 @@ public interface CoreRepository {
     Pair<Boolean, String> getABIByAddress(String address);
 
     Pair<Boolean, String> uploadContractCode(MultipartFile uploadFile, String address) throws IOException;
+
+    Block getBlockByHash(String hash);
+
+    List<Block.Transaction> getTransactionList();
+
+    List<Block> getBlockList();
 }

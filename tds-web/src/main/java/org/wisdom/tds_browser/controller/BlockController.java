@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.wisdom.tds_browser.bean.Block;
+import org.wisdom.tds_browser.result.APIResult;
 import org.wisdom.tds_browser.service.CoreRepository;
 import org.wisdom.tds_browser.tool.PageTool;
 
@@ -42,6 +43,26 @@ public class BlockController {
                                                       @RequestParam(value = "per_page") Integer perPage,
                                                       @RequestParam(value = "page") Integer page) {
         return PageTool.getPageList(coreRepository.getTransactionByTo(to), page, perPage);
+    }
+
+    @GetMapping("/get_block_by_hash")
+    @ResponseBody
+    public Block getBlockBy(@RequestParam(value = "block_hash") String blockHash) {
+        return coreRepository.getBlockByHash(blockHash);
+    }
+
+    @GetMapping("/get_transaction_list")
+    @ResponseBody
+    public APIResult<Page<Block.Transaction>> getTransactionList(@RequestParam(value = "per_page") Integer perPage,
+                                                      @RequestParam(value = "page") Integer page) {
+        return APIResult.newSuccess(PageTool.getPageList(coreRepository.getTransactionList(), page, perPage));
+    }
+
+    @GetMapping("/get_block_list")
+    @ResponseBody
+    public  APIResult<Page<Block>> getBlockList(@RequestParam(value = "per_page") Integer perPage,
+                                                      @RequestParam(value = "page") Integer page) {
+        return APIResult.newSuccess(PageTool.getPageList(coreRepository.getBlockList(), page, perPage));
     }
 
 }

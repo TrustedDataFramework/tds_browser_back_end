@@ -148,6 +148,40 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
+    public Block getBlockByHash(String hash) {
+        Optional<HeaderEntity> optional = headerDao.findByBlockHash(hash);
+        return optional.map(this::convertBlock).orElse(null);
+    }
+
+    @Override
+    public List<Block.Transaction> getTransactionList() {
+        return transactionDao.findAll().stream().map(x ->
+                Block.Transaction.builder()
+                        .amount(x.amount)
+                        .from(x.from)
+                        .gasPrice(x.gasPrice)
+                        .nonce(x.nonce)
+                        .payload(Hex.encodeHexString(x.payload))
+                        .signature(x.signature)
+                        .hash(x.txHash)
+                        .type(x.type)
+                        .version(x.version)
+                        .to(x.to)
+                        .fee(x.fee)
+                        .createdAt(x.createdAt)
+                        .gasLimit(x.gasLimit)
+                        .position(x.position)
+                        .size(x.size)
+                        .build()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Block> getBlockList() {
+        List<HeaderEntity> list = headerDao.findAll();
+        return list.stream().map(this::convertBlock).collect(Collectors.toList());
+    }
+
+    @Override
     public Block.Transaction getTransactionByTxHash(String txHash) {
         Optional<TransactionEntity> op = transactionDao.findById(txHash);
         if (!op.isPresent()) return null;

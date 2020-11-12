@@ -15,4 +15,5 @@ public interface HeaderDao extends JpaRepository<HeaderEntity, String> {
 
     Optional<HeaderEntity> findByHeight(long height);
 
+    Optional<HeaderEntity> findByBlockHash(String hash);
 }
