@@ -33,7 +33,7 @@ public interface CoreRepository {
 
     Block getBlockByHash(String hash);
 
-    List<Block.Transaction> getTransactionList();
+    Page<Block.Transaction> getTransactionList(Pageable pageable);
 
     Page<Block> getBlockList(Pageable pageable);
 }

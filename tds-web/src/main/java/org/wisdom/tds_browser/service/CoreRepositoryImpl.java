@@ -159,8 +159,8 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
-    public List<Block.Transaction> getTransactionList() {
-        return transactionDao.findAll().stream().map(x ->
+    public Page<Block.Transaction> getTransactionList(Pageable pageable) {
+        return transactionDao.findAllByOrderByTxHash(pageable).map(x ->
                 Block.Transaction.builder()
                         .amount(x.amount)
                         .from(x.from)
@@ -177,7 +177,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .gasLimit(x.gasLimit)
                         .position(x.position)
                         .size(x.size)
-                        .build()).collect(Collectors.toList());
+                        .build());
     }
 
     @Override

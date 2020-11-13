@@ -33,18 +33,18 @@ public class BlockController {
 
     @GetMapping("/get_transaction_by_from")
     @ResponseBody
-    public Page<Block.Transaction> getTransactionByFrom(@RequestParam(value = "from") String from,
-                                                        @RequestParam(value = "per_page") Integer perPage,
-                                                        @RequestParam(value = "page") Integer page) {
-        return PageTool.getPageList(coreRepository.getTransactionByFrom(from), page, perPage);
+    public APIResult<Page<Block.Transaction>> getTransactionByFrom(@RequestParam(value = "from") String from,
+                                                                   @RequestParam(value = "per_page") Integer perPage,
+                                                                   @RequestParam(value = "page") Integer page) {
+        return APIResult.newSuccess(PageTool.getPageList(coreRepository.getTransactionByFrom(from), page, perPage));
     }
 
     @GetMapping("/get_transaction_by_to")
     @ResponseBody
-    public Page<Block.Transaction> getTransactionByTo(@RequestParam(value = "to") String to,
+    public APIResult<Page<Block.Transaction>> getTransactionByTo(@RequestParam(value = "to") String to,
                                                       @RequestParam(value = "per_page") Integer perPage,
                                                       @RequestParam(value = "page") Integer page) {
-        return PageTool.getPageList(coreRepository.getTransactionByTo(to), page, perPage);
+        return  APIResult.newSuccess(PageTool.getPageList(coreRepository.getTransactionByTo(to), page, perPage));
     }
 
     @GetMapping("/get_block_by_hash")
@@ -56,14 +56,14 @@ public class BlockController {
     @GetMapping("/get_transaction_list")
     @ResponseBody
     public APIResult<Page<Block.Transaction>> getTransactionList(@RequestParam(value = "per_page") Integer perPage,
-                                                      @RequestParam(value = "page") Integer page) {
-        return APIResult.newSuccess(PageTool.getPageList(coreRepository.getTransactionList(), page, perPage));
+                                                                 @RequestParam(value = "page") Integer page) {
+        return APIResult.newSuccess(coreRepository.getTransactionList(PageRequest.of(page, perPage, Sort.Direction.ASC, "txHash")));
     }
 
     @GetMapping("/get_block_list")
     @ResponseBody
-    public  APIResult<Page<Block>> getBlockList(@RequestParam(value = "per_page") Integer perPage,
-                                                      @RequestParam(value = "page") Integer page) {
+    public APIResult<Page<Block>> getBlockList(@RequestParam(value = "per_page") Integer perPage,
+                                               @RequestParam(value = "page") Integer page) {
         return APIResult.newSuccess(coreRepository.getBlockList(PageRequest.of(page, perPage, Sort.Direction.DESC, "height")));
     }
 
