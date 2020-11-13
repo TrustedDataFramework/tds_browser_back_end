@@ -3,6 +3,8 @@ package org.wisdom.tds_browser.service;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.wisdom.tds_browser.bean.Abi;
@@ -178,8 +180,8 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
-    public List<Block> getBlockList() {
-        List<HeaderEntity> list = headerDao.findAll();
+    public List<Block> getBlockList(Pageable pageable) {
+        Page<HeaderEntity> list = headerDao.findAllByOrderByHeightDesc(pageable);
         return list.stream().map(this::convertBlock).collect(Collectors.toList());
     }
 

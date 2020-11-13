@@ -1,6 +1,7 @@
 package org.wisdom.tds_browser.service;
 
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import org.wisdom.tds_browser.bean.Abi;
 import org.wisdom.tds_browser.bean.Block;
@@ -34,5 +35,5 @@ public interface CoreRepository {
 
     List<Block.Transaction> getTransactionList();
 
-    List<Block> getBlockList();
+    List<Block> getBlockList(Pageable pageable);
 }
