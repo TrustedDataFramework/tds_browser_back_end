@@ -181,9 +181,9 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
-    public List<Block> getBlockList(Pageable pageable) {
+    public Page<Block> getBlockList(Pageable pageable) {
         Page<HeaderEntity> list = headerDao.findAllByOrderByHeightDesc(pageable);
-        return list.stream().map(this::convertBlock).sorted(Comparator.comparing(Block::getHeight).reversed()).collect(Collectors.toList());
+        return list.map(this::convertBlock);
     }
 
     @Override

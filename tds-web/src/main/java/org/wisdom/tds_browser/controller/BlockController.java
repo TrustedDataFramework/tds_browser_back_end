@@ -21,14 +21,14 @@ public class BlockController {
 
     @GetMapping("/get_block_by_height")
     @ResponseBody
-    public Block getBlockByHeight(@RequestParam(value = "height") int height) {
-        return coreRepository.getBlockByHeight(height);
+    public APIResult<Block> getBlockByHeight(@RequestParam(value = "height") int height) {
+        return APIResult.newSuccess(coreRepository.getBlockByHeight(height));
     }
 
     @GetMapping("/get_transaction_by_hash")
     @ResponseBody
-    public Block.Transaction getTransactionByTxHash(@RequestParam(value = "tx_hash") String txHash) {
-        return coreRepository.getTransactionByTxHash(txHash);
+    public APIResult<Block.Transaction> getTransactionByTxHash(@RequestParam(value = "tx_hash") String txHash) {
+        return APIResult.newSuccess(coreRepository.getTransactionByTxHash(txHash));
     }
 
     @GetMapping("/get_transaction_by_from")
@@ -49,8 +49,8 @@ public class BlockController {
 
     @GetMapping("/get_block_by_hash")
     @ResponseBody
-    public Block getBlockBy(@RequestParam(value = "block_hash") String blockHash) {
-        return coreRepository.getBlockByHash(blockHash);
+    public APIResult<Block> getBlockByHash(@RequestParam(value = "block_hash") String blockHash) {
+        return APIResult.newSuccess(coreRepository.getBlockByHash(blockHash));
     }
 
     @GetMapping("/get_transaction_list")
@@ -64,7 +64,7 @@ public class BlockController {
     @ResponseBody
     public  APIResult<Page<Block>> getBlockList(@RequestParam(value = "per_page") Integer perPage,
                                                       @RequestParam(value = "page") Integer page) {
-        return APIResult.newSuccess(PageTool.getPageList(coreRepository.getBlockList(PageRequest.of(page, perPage, Sort.Direction.DESC, "height")), page, perPage));
+        return APIResult.newSuccess(coreRepository.getBlockList(PageRequest.of(page, perPage, Sort.Direction.DESC, "height")));
     }
 
 }
