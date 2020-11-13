@@ -20,6 +20,7 @@ import org.wisdom.tds_browser.entity.TransactionEntity;
 import org.wisdom.tds_browser.tool.NodeTool;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -182,7 +183,7 @@ public class CoreRepositoryImpl implements CoreRepository {
     @Override
     public List<Block> getBlockList(Pageable pageable) {
         Page<HeaderEntity> list = headerDao.findAllByOrderByHeightDesc(pageable);
-        return list.stream().map(this::convertBlock).collect(Collectors.toList());
+        return list.stream().map(this::convertBlock).sorted(Comparator.comparing(Block::getHeight).reversed()).collect(Collectors.toList());
     }
 
     @Override
