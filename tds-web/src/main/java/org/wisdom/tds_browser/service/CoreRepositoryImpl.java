@@ -2,7 +2,7 @@ package org.wisdom.tds_browser.service;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Hex;
+import org.bouncycastle.util.encoders.Hex;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -53,7 +53,7 @@ public class CoreRepositoryImpl implements CoreRepository {
     @Override
     public String getBinaryByABI(String abi) {
         Optional<ContractEntity> optional = contractDao.findByAbi(abi.getBytes());
-        return optional.map(contractEntity -> Hex.encodeHexString(contractEntity.binary)).orElse(null);
+        return optional.map(contractEntity -> Hex.toHexString(contractEntity.binary)).orElse(null);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .from(x.from)
                         .gasPrice(x.gasPrice)
                         .nonce(x.nonce)
-                        .payload(Hex.encodeHexString(x.payload))
+                        .payload(Hex.toHexString(x.payload))
                         .signature(x.signature)
                         .hash(x.txHash)
                         .type(x.type)
@@ -98,7 +98,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .from(x.from)
                         .gasPrice(x.gasPrice)
                         .nonce(x.nonce)
-                        .payload(Hex.encodeHexString(x.payload))
+                        .payload(Hex.toHexString(x.payload))
                         .signature(x.signature)
                         .hash(x.txHash)
                         .type(x.type)
@@ -120,7 +120,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .from(x.from)
                         .gasPrice(x.gasPrice)
                         .nonce(x.nonce)
-                        .payload(Hex.encodeHexString(x.payload))
+                        .payload(Hex.toHexString(x.payload))
                         .signature(x.signature)
                         .hash(x.txHash)
                         .type(x.type)
@@ -166,7 +166,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .from(x.from)
                         .gasPrice(x.gasPrice)
                         .nonce(x.nonce)
-                        .payload(Hex.encodeHexString(x.payload))
+                        .payload(Hex.toHexString(x.payload))
                         .signature(x.signature)
                         .hash(x.txHash)
                         .type(x.type)
@@ -196,7 +196,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                 .from(x.from)
                 .gasPrice(x.gasPrice)
                 .nonce(x.nonce)
-                .payload(Hex.encodeHexString(x.payload))
+                .payload(Hex.toHexString(x.payload))
                 .signature(x.signature)
                 .hash(x.txHash)
                 .type(x.type)
@@ -217,7 +217,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                 .hash(entity.blockHash)
                 .hashPrev(entity.hashPrevBlock)
                 .height(entity.height)
-                .payload(Hex.encodeHexString(entity.payload))
+                .payload(Hex.toHexString(entity.payload))
                 .size(entity.size)
                 .stateRoot(entity.stateRoot)
                 .transactionsRoot(entity.transactionsRoot)
@@ -228,7 +228,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                                 .from(x.from)
                                 .gasPrice(x.gasPrice)
                                 .nonce(x.nonce)
-                                .payload(Hex.encodeHexString(x.payload))
+                                .payload(Hex.toHexString(x.payload))
                                 .signature(x.signature)
                                 .hash(x.txHash)
                                 .type(x.type)
