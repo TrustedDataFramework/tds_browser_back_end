@@ -3,7 +3,6 @@ package org.wisdom.tds_browser.timer;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Hex;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,6 +73,14 @@ public class BlockJob {
         this.transactionDao = transactionDao;
         this.nodeTool = nodeTool;
         this.contractDao = contractDao;
+        SyncHeightEntity entity = syncHeightDao.findBySyncName("block_height");
+        if (entity == null){
+            syncHeightDao.save(SyncHeightEntity.builder().syncName("block_height")
+                    .height(0L)
+                    .createdAt(new Date())
+                    .updatedAt(new Date())
+                    .build());
+        }
     }
 
     private void getBlocks() {

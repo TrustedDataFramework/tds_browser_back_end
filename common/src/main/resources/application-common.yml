@@ -1,8 +1,10 @@
 spring:
   datasource:
-      url: jdbc:postgresql://localhost:5432/tds_test
-      username: postgres
-      password: 123123liu
+      url: ${DATA_SOURCE_URL:jdbc:postgresql://8.210.39.91:5432/tds_test}
+      username: ${DB_USERNAME:tds}
+      password: ${DB_PASSWORD:123456}
+
+
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
@@ -20,4 +22,4 @@ spring:
 
 
 dandelion:
-  peers:  ${NODE_URL:http://localhost:7010}
+  peers: ${NODE_URL:http://localhost:7010}

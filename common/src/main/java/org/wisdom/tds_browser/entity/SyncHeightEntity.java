@@ -1,5 +1,8 @@
 package org.wisdom.tds_browser.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,6 +15,9 @@ import java.util.Date;
 @Table(name = SyncHeightEntity.TABLE_SYNC_HEIGHT)
 @SQLDelete(sql = "update coin set deleted_at = now() at time zone 'utc' where id = ?")
 @Where(clause = "deleted_at is null")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SyncHeightEntity {
 
     static final String TABLE_SYNC_HEIGHT = "sync_height";
@@ -37,7 +43,7 @@ public class SyncHeightEntity {
     public String syncName;
 
     @Column(name = COLUMN_HEIGHT, nullable = false)
-    public long height;
+    public Long height;
 
     @Column(name = COLUMN_CREATED_AT)
     @Temporal(TemporalType.TIMESTAMP)

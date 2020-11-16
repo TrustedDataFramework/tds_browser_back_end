@@ -1,6 +1,18 @@
 version: '3'
 services:
 
+  tds_psql:
+     image: frodenas/postgresql:latest
+     container_name: tds_psql
+     ports:
+        - 5432:5432
+     volumes:
+       - /opt/tds_psql:/var/lib/postgresql/data
+     environment:
+       POSTGRES_PASSWORD: 123456
+       POSTGRES_USERNAME: tds
+       POSTGRES_DBNAME: tds_test
+
   eureka-server:
     image: wisdomchain/eureka-server:latest
     container_name: eureka-server
@@ -19,6 +31,9 @@ services:
       - 9092:9092
     environment:
       EUREKA_SERVICE_URL: 'http://eureka-server:8761'
+      DATA_SOURCE_URL: 'jdbc:postgresql://tds_psql:5432/postgres'
+      DB_USERNAME: 'tds'
+      DB_PASSWORD: '123456'
 
   tds-web:
     image: wisdomchain/tds-web:latest
@@ -28,3 +43,6 @@ services:
       - 8080:8080
     environment:
       EUREKA_SERVICE_URL: 'http://eureka-server:8761'
+      DATA_SOURCE_URL: 'jdbc:postgresql://tds_psql:5432/postgres'
+      DB_USERNAME: 'tds'
+      DB_PASSWORD: '123456'
