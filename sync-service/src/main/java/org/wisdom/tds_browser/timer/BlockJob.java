@@ -73,14 +73,6 @@ public class BlockJob {
         this.transactionDao = transactionDao;
         this.nodeTool = nodeTool;
         this.contractDao = contractDao;
-        SyncHeightEntity entity = syncHeightDao.findBySyncName("block_height");
-        if (entity == null){
-            syncHeightDao.save(SyncHeightEntity.builder().syncName("block_height")
-                    .height(0L)
-                    .createdAt(new Date())
-                    .updatedAt(new Date())
-                    .build());
-        }
     }
 
     private void getBlocks() {

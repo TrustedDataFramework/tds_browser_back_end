@@ -20,7 +20,6 @@ import org.wisdom.tds_browser.entity.TransactionEntity;
 import org.wisdom.tds_browser.tool.NodeTool;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,17 +28,14 @@ import java.util.stream.Collectors;
 @Component
 public class CoreRepositoryImpl implements CoreRepository {
 
-    private HeaderDao headerDao;
-    private TransactionDao transactionDao;
-    private NodeTool nodeTool;
-    private ContractDao contractDao;
+    private final HeaderDao headerDao;
+    private final TransactionDao transactionDao;
+    private final ContractDao contractDao;
 
-    public CoreRepositoryImpl(NodeTool nodeTool,
-                              HeaderDao headerDao,
+    public CoreRepositoryImpl(HeaderDao headerDao,
                               ContractDao contractDao,
                               TransactionDao transactionDao) {
         this.headerDao = headerDao;
-        this.nodeTool = nodeTool;
         this.transactionDao = transactionDao;
         this.contractDao = contractDao;
     }
@@ -222,6 +218,8 @@ public class CoreRepositoryImpl implements CoreRepository {
                 .stateRoot(entity.stateRoot)
                 .transactionsRoot(entity.transactionsRoot)
                 .version(entity.version)
+                .allFee(entities.size() > 0 ? entities.get(0).fee : 0)
+                .minerAddress(entities.size() > 0 ? entities.get(0).to : null)
                 .body(entities.stream().map(x ->
                         Block.Transaction.builder()
                                 .amount(x.amount)

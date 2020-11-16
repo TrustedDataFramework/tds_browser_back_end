@@ -36,6 +36,12 @@ public class Block implements Serializable {
 
     public String payload;
 
+    @JsonProperty("miner_address")
+    public String minerAddress;
+
+    @JsonProperty("all_fee")
+    public long allFee;
+
 
 
     @Override

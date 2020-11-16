@@ -3,6 +3,8 @@ spring:
       url: ${DATA_SOURCE_URL:jdbc:postgresql://8.210.39.91:5432/tds_test}
       username: ${DB_USERNAME:tds}
       password: ${DB_PASSWORD:123456}
+      schema: classpath:db-migration.sql
+      initialization-mode: always
 
 
   jpa:
