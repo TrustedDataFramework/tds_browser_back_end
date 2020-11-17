@@ -156,7 +156,7 @@ public class CoreRepositoryImpl implements CoreRepository {
 
     @Override
     public Page<Block.Transaction> getTransactionList(Pageable pageable) {
-        return transactionDao.findAllByOrderByTxHash(pageable).map(x ->
+        return transactionDao.findAll(pageable).map(x ->
                 Block.Transaction.builder()
                         .amount(x.amount)
                         .from(x.from)
