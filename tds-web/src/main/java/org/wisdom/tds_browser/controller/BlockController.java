@@ -57,7 +57,7 @@ public class BlockController {
     @ResponseBody
     public APIResult<Page<Block.Transaction>> getTransactionList(@RequestParam(value = "per_page") Integer perPage,
                                                                  @RequestParam(value = "page") Integer page) {
-        return APIResult.newSuccess(coreRepository.getTransactionList(PageRequest.of(page, perPage, Sort.Direction.ASC, "txHash")));
+        return APIResult.newSuccess(coreRepository.getTransactionList(PageRequest.of(page, perPage, Sort.Direction.DESC, "createdAt")));
     }
 
     @GetMapping("/get_block_list")
