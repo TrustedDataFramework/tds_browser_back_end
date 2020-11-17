@@ -31,7 +31,7 @@ services:
       - 9092:9092
     environment:
       EUREKA_SERVICE_URL: 'http://eureka-server:8761'
-      DATA_SOURCE_URL: 'jdbc:postgresql://tds_psql:5432/postgres'
+      DATA_SOURCE_URL: 'jdbc:postgresql://tds_psql:5432/tds_test'
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
 
@@ -43,6 +43,6 @@ services:
       - 8080:8080
     environment:
       EUREKA_SERVICE_URL: 'http://eureka-server:8761'
-      DATA_SOURCE_URL: 'jdbc:postgresql://tds_psql:5432/postgres'
+      DATA_SOURCE_URL: 'jdbc:postgresql://tds_psql:5432/tds_test'
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
