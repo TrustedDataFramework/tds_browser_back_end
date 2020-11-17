@@ -34,6 +34,7 @@ services:
       DATA_SOURCE_URL: 'jdbc:postgresql://tds_psql:5432/tds_test'
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
+      NODE_URL: 'http://192.168.1.52:7010'
 
   tds-web:
     image: wisdomchain/tds-web:latest
@@ -46,3 +47,4 @@ services:
       DATA_SOURCE_URL: 'jdbc:postgresql://tds_psql:5432/tds_test'
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
+      NODE_URL: 'http://192.168.1.52:7010'
