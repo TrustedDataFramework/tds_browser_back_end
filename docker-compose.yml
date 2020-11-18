@@ -12,7 +12,7 @@ services:
        POSTGRES_PASSWORD: 123456
        POSTGRES_USERNAME: tds
        POSTGRES_DBNAME: tds_test
-       DB_INIT_MODE: never
+
 
   eureka-server:
     image: wisdomchain/eureka-server:latest
@@ -36,6 +36,7 @@ services:
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
       NODE_URL: 'http://192.168.1.52:7010'
+      DB_INIT_MODE: never
 
   tds-web:
     image: wisdomchain/tds-web:latest
