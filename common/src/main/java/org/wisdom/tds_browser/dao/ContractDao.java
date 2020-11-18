@@ -10,4 +10,6 @@ public interface ContractDao extends JpaRepository<ContractEntity, String> {
     Optional<ContractEntity> findByAbi(byte[] abi);
 
     Optional<ContractEntity> findByAddress(String address);
+
+    Optional<ContractEntity> findByTxHash(String txHash);
 }

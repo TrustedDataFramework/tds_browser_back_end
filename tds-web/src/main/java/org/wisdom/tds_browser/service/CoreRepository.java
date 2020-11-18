@@ -36,4 +36,6 @@ public interface CoreRepository {
     Page<Block.Transaction> getTransactionList(Pageable pageable);
 
     Page<Block> getBlockList(Pageable pageable);
+
+    Contract getContractByHash(String hash);
 }

@@ -54,6 +54,12 @@ public class ContractController {
         return APIResult.newSuccess(PageTool.getPageList(coreRepository.getContractList(), page, perPage));
     }
 
+    @GetMapping("/get_contract_by_hash")
+    @ResponseBody
+    public APIResult<Contract> getContractByHash(@RequestParam(value = "hash") String hash){
+        return APIResult.newSuccess(coreRepository.getContractByHash(hash));
+    }
+
     @GetMapping("/get_call_contract_list")
     @ResponseBody
     public APIResult<Page<Block.Transaction>> getCallContractList(@RequestParam(value = "address") String address,

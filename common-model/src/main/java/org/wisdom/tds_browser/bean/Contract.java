@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Builder
@@ -22,6 +23,11 @@ public class Contract  implements Serializable {
 
     @JsonProperty("tx_hash")
     public String txHash;
+
+    public long fee;
+
+    @JsonProperty("created_at")
+    public Date createdAt;
 
 
 }

@@ -54,14 +54,19 @@ public class CoreRepositoryImpl implements CoreRepository {
 
     @Override
     public List<Contract> getContractList() {
-        return contractDao.findAll().stream().map(x -> Contract.builder()
-                .address(x.address)
-                .amount(x.amount)
-                .from(x.from)
-                .to(x.to)
-                .height(x.height)
-                .txHash(x.txHash)
-                .build()).collect(Collectors.toList());
+        return contractDao.findAll().stream().map(x->{
+            TransactionEntity entity = transactionDao.findById(x.txHash).orElseThrow(RuntimeException::new);
+            return Contract.builder()
+                    .address(x.address)
+                    .amount(x.amount)
+                    .from(x.from)
+                    .to(x.to)
+                    .height(x.height)
+                    .txHash(x.txHash)
+                    .fee(entity.fee)
+                    .createdAt(entity.createdAt)
+                    .build();
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -180,6 +185,22 @@ public class CoreRepositoryImpl implements CoreRepository {
     public Page<Block> getBlockList(Pageable pageable) {
         Page<HeaderEntity> list = headerDao.findAllByOrderByHeightDesc(pageable);
         return list.map(this::convertBlock);
+    }
+
+    @Override
+    public Contract getContractByHash(String hash) {
+        TransactionEntity entity = transactionDao.findById(hash).orElseThrow(RuntimeException::new);
+        ContractEntity x = contractDao.findByTxHash(hash).orElseThrow(RuntimeException::new);
+        return Contract.builder()
+                .address(x.address)
+                .amount(x.amount)
+                .from(x.from)
+                .to(x.to)
+                .height(x.height)
+                .txHash(x.txHash)
+                .fee(entity.fee)
+                .createdAt(entity.createdAt)
+                .build();
     }
 
     @Override
