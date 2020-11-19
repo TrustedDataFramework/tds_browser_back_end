@@ -2,16 +2,16 @@ version: '3'
 services:
 
   tds_psql:
-     image: frodenas/postgresql:latest
+     image: sameersbn/postgresql:latest
      container_name: tds_psql
      ports:
         - 5432:5432
      volumes:
-       - /opt/tds_psql:/var/lib/postgresql/data
+       - /opt/tds_psql:/var/lib/postgresql
      environment:
-       POSTGRES_PASSWORD: 123456
-       POSTGRES_USERNAME: tds
-       POSTGRES_DBNAME: tds_test
+       DB_PASS: 123456
+       DB_USER: tds
+       DB_NAME: tds_test
 
 
 
