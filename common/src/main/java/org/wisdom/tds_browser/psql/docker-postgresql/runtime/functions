@@ -389,6 +389,7 @@ configure_postgresql() {
 
   create_user
   create_database
+  exec_sql
   create_replication_user
 
   # stop the postgres server
