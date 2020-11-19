@@ -1,8 +1,8 @@
 FROM frodenas/ubuntu
 LABEL maintainer="Ferran Rodenas <frodenas@gmail.com>, Dr Nic Williams <drnic@starkandwayne.com>"
 
-# Install PostgreSQL 9.6
-ENV PG_VERSION 9.6
+# Install PostgreSQL 11
+ENV PG_VERSION 11
 RUN DEBIAN_FRONTEND=noninteractive \
     cd /tmp && \
     wget https://www.postgresql.org/media/keys/ACCC4CF8.asc && \

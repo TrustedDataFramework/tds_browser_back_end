@@ -26,3 +26,4 @@ fi
 # Start PostgreSQL
 echo "Starting PostgreSQL..."
 sudo -u postgres /usr/lib/postgresql/${PG_VERSION}/bin/postgres -D /data
+
