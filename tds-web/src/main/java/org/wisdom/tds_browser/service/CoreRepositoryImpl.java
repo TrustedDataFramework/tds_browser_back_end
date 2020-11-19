@@ -204,6 +204,18 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
+    public String getBinaryByAddress(String address) {
+        Optional<ContractEntity> optional = contractDao.findById(address);
+        return optional.map(contractEntity -> Hex.toHexString(contractEntity.binary)).orElse(null);
+    }
+
+    @Override
+    public String getCodeByAddress(String address) {
+        Optional<ContractEntity> optional = contractDao.findById(address);
+        return optional.map(contractEntity -> Hex.toHexString(contractEntity.code)).orElse(null);
+    }
+
+    @Override
     public Block.Transaction getTransactionByTxHash(String txHash) {
         Optional<TransactionEntity> op = transactionDao.findById(txHash);
         if (!op.isPresent()) return null;

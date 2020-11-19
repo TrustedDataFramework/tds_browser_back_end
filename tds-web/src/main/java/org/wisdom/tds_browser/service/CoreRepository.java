@@ -38,4 +38,8 @@ public interface CoreRepository {
     Page<Block> getBlockList(Pageable pageable);
 
     Contract getContractByHash(String hash);
+
+    String getBinaryByAddress(String address);
+
+    String getCodeByAddress(String address);
 }

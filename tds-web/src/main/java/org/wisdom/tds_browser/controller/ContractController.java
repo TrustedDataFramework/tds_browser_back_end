@@ -36,6 +36,20 @@ public class ContractController {
         return APIResult.newFailed(null);
     }
 
+    @GetMapping("/get_binary_by_address")
+    @ResponseBody
+    public APIResult<String> getBinaryByAddress(@RequestParam(value = "address") String address) {
+        return APIResult.newSuccess(coreRepository.getBinaryByAddress(address));
+    }
+
+    @GetMapping("/get_code_by_address")
+    @ResponseBody
+    public APIResult<String> getCodeByAddress(@RequestParam(value = "address") String address) {
+        return APIResult.newSuccess(coreRepository.getCodeByAddress(address));
+    }
+
+
+
     @RequestMapping(value = "/upload_contract_code", method = RequestMethod.POST)
     @ResponseBody
     public APIResult<String> uploadContractCode(@RequestPart("upload_file") MultipartFile uploadFile,
