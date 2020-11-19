@@ -212,7 +212,13 @@ public class CoreRepositoryImpl implements CoreRepository {
     @Override
     public String getCodeByAddress(String address) {
         Optional<ContractEntity> optional = contractDao.findById(address);
-        return optional.map(contractEntity -> Hex.toHexString(contractEntity.code)).orElse(null);
+        return optional.map(contractEntity -> {
+            if(contractEntity.code == null){
+                return null;
+            }else {
+                return Hex.toHexString(contractEntity.code);
+            }
+        }).orElse(null);
     }
 
     @Override
