@@ -352,7 +352,7 @@ create_database() {
 exec_sql() {
   echo "exec sql: ..."
   for database in $(awk -F',' '{for (i = 1 ; i <= NF ; i++) print $i}' <<< "${DB_NAME}"); do
-        sudo -u postgres psql -q "${database}" -f "${PG_APP_HOME}/ddl.sql"
+        psql -U ${PG_USER} -d "${database}" -f "${PG_APP_HOME}/ddl.sql"
   done
 }
 
