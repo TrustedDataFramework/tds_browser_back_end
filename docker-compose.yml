@@ -2,7 +2,7 @@ version: '3'
 services:
 
   tds_psql:
-     image: sameersbn/postgresql:latest
+     image: wisdomchain/tds_psql:latest
      container_name: tds_psql
      ports:
         - 5432:5432
