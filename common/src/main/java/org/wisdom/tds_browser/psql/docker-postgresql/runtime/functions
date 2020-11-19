@@ -333,8 +333,12 @@ create_database() {
       *)
         for database in $(awk -F',' '{for (i = 1 ; i <= NF ; i++) print $i}' <<< "${DB_NAME}"); do
           echo "Creating database: ${database}..."
+#          if [[ -z $(psql -U ${PG_USER} -Atc "SELECT 1 FROM pg_catalog.pg_database WHERE datname = '${database}'";) ]]; then
+#            psql -U ${PG_USER} -c "CREATE DATABASE \"${database}\" WITH TEMPLATE = \"${DB_TEMPLATE}\";" >/dev/null
+#          fi
+
           if [[ -z $(psql -U ${PG_USER} -Atc "SELECT 1 FROM pg_catalog.pg_database WHERE datname = '${database}'";) ]]; then
-            psql -U ${PG_USER} -c "CREATE DATABASE \"${database}\" WITH TEMPLATE = \"${DB_TEMPLATE}\";" >/dev/null
+            psql -U ${PG_USER} -c "CREATE DATABASE \"${database}\" WITH OWNER=\"$DB_USER\";" >/dev/null
           fi
 
           load_extensions ${database}
@@ -352,7 +356,7 @@ create_database() {
 exec_sql() {
   echo "exec sql: ..."
   for database in $(awk -F',' '{for (i = 1 ; i <= NF ; i++) print $i}' <<< "${DB_NAME}"); do
-        psql -U ${PG_USER}  -d ${database} -f "${PG_APP_HOME}/ddl.sql"
+        psql -U ${DB_USER}  -d ${database} -f "${PG_APP_HOME}/ddl.sql"
   done
 }
 
