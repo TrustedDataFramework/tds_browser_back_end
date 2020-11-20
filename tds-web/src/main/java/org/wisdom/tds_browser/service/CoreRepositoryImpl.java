@@ -53,7 +53,7 @@ public class CoreRepositoryImpl implements CoreRepository {
 
     @Override
     public List<Contract> getContractList() {
-        return contractDao.findAll().stream().map(x->{
+        return contractDao.findAll().stream().map(x -> {
             TransactionEntity entity = transactionDao.findById(x.txHash).orElseThrow(RuntimeException::new);
             return Contract.builder()
                     .address(x.address)
@@ -203,18 +203,22 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
-    public String getBinaryByAddress(String address) {
+    public Pair<Boolean, String> getPayloadByAddress(String address) {
         Optional<ContractEntity> optional = contractDao.findById(address);
-        return optional.map(contractEntity -> Hex.toHexString(contractEntity.binary)).orElse(null);
+        if (!optional.isPresent()) {
+            return Pair.with(false, "contract address is not exist");
+        }
+        Optional<TransactionEntity> entity = transactionDao.findById(optional.get().txHash);
+        return Pair.with(true, entity.map(contractEntity -> Hex.toHexString(transactionDao.findById(contractEntity.txHash).orElseThrow(RuntimeException::new).payload)));
     }
 
     @Override
     public String getCodeByAddress(String address) {
         Optional<ContractEntity> optional = contractDao.findById(address);
         return optional.map(contractEntity -> {
-            if(contractEntity.code == null){
+            if (contractEntity.code == null) {
                 return null;
-            }else {
+            } else {
                 return new String(contractEntity.code);
             }
         }).orElse(null);

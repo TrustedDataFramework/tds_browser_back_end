@@ -36,10 +36,14 @@ public class ContractController {
         return APIResult.newFailed(null);
     }
 
-    @GetMapping("/get_binary_by_address")
+    @GetMapping("/get_payload_by_address")
     @ResponseBody
-    public APIResult<String> getBinaryByAddress(@RequestParam(value = "address") String address) {
-        return APIResult.newSuccess(coreRepository.getBinaryByAddress(address));
+    public APIResult<String> getPayloadByAddress(@RequestParam(value = "address") String address) {
+        Pair<Boolean, String> pair = coreRepository.getPayloadByAddress(address);
+        if (pair.key) {
+            return APIResult.newSuccess(pair.value);
+        }
+        return APIResult.newFailed(pair.value);
     }
 
     @GetMapping("/get_code_by_address")

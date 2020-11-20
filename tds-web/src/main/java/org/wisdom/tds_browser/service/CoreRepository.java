@@ -2,13 +2,11 @@ package org.wisdom.tds_browser.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.multipart.MultipartFile;
 import org.wisdom.tds_browser.bean.Abi;
 import org.wisdom.tds_browser.bean.Block;
 import org.wisdom.tds_browser.bean.Contract;
 import org.wisdom.tds_browser.bean.Pair;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface CoreRepository {
@@ -39,7 +37,7 @@ public interface CoreRepository {
 
     Contract getContractByHash(String hash);
 
-    String getBinaryByAddress(String address);
+    Pair<Boolean, String>  getPayloadByAddress(String address);
 
     String getCodeByAddress(String address);
 }
