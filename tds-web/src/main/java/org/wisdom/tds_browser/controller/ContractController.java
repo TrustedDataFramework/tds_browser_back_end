@@ -52,9 +52,9 @@ public class ContractController {
 
     @RequestMapping(value = "/upload_contract_code", method = RequestMethod.POST)
     @ResponseBody
-    public APIResult<String> uploadContractCode(@RequestPart("upload_file") MultipartFile uploadFile,
-                                                @RequestParam(value = "address") String address) throws IOException {
-        Pair<Boolean, String> pair = coreRepository.uploadContractCode(uploadFile, address);
+    public APIResult<String> uploadContractCode(@RequestParam(value= "code") String code,
+                                                @RequestParam(value = "address") String address) {
+        Pair<Boolean, String> pair = coreRepository.uploadContractCode(code, address);
         if (pair.key) {
             return APIResult.newSuccess(pair.value);
         }

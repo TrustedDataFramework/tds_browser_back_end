@@ -17,7 +17,6 @@ import org.wisdom.tds_browser.dao.TransactionDao;
 import org.wisdom.tds_browser.entity.ContractEntity;
 import org.wisdom.tds_browser.entity.HeaderEntity;
 import org.wisdom.tds_browser.entity.TransactionEntity;
-import org.wisdom.tds_browser.tool.NodeTool;
 
 import java.io.IOException;
 import java.util.List;
@@ -142,13 +141,13 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
-    public Pair<Boolean, String> uploadContractCode(MultipartFile uploadFile, String address) throws IOException {
+    public Pair<Boolean, String> uploadContractCode(String code, String address) {
         Optional<ContractEntity> entity = contractDao.findByAddress(address);
         if (!entity.isPresent()) {
             return Pair.with(false, "contract address is not exist");
         }
         ContractEntity contractEntity = entity.get();
-        contractEntity.code = uploadFile.getBytes();
+        contractEntity.code = code.getBytes();
         contractDao.save(contractEntity);
         return Pair.with(true, null);
     }
@@ -216,7 +215,7 @@ public class CoreRepositoryImpl implements CoreRepository {
             if(contractEntity.code == null){
                 return null;
             }else {
-                return Hex.toHexString(contractEntity.code);
+                return new String(contractEntity.code);
             }
         }).orElse(null);
     }

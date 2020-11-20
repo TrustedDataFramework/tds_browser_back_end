@@ -29,7 +29,7 @@ public interface CoreRepository {
 
     Pair<Boolean, Abi> getABIByAddress(String address);
 
-    Pair<Boolean, String> uploadContractCode(MultipartFile uploadFile, String address) throws IOException;
+    Pair<Boolean, String> uploadContractCode(String code, String address);
 
     Block getBlockByHash(String hash);
 
