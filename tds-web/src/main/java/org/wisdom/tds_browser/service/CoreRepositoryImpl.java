@@ -6,19 +6,20 @@ import org.bouncycastle.util.encoders.Hex;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 import org.wisdom.tds_browser.bean.Abi;
 import org.wisdom.tds_browser.bean.Block;
 import org.wisdom.tds_browser.bean.Contract;
 import org.wisdom.tds_browser.bean.Pair;
 import org.wisdom.tds_browser.dao.ContractDao;
 import org.wisdom.tds_browser.dao.HeaderDao;
+import org.wisdom.tds_browser.dao.SyncHeightDao;
 import org.wisdom.tds_browser.dao.TransactionDao;
 import org.wisdom.tds_browser.entity.ContractEntity;
 import org.wisdom.tds_browser.entity.HeaderEntity;
+import org.wisdom.tds_browser.entity.SyncHeightEntity;
 import org.wisdom.tds_browser.entity.TransactionEntity;
 
-import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,13 +31,16 @@ public class CoreRepositoryImpl implements CoreRepository {
     private final HeaderDao headerDao;
     private final TransactionDao transactionDao;
     private final ContractDao contractDao;
+    private final SyncHeightDao syncHeightDao;
 
     public CoreRepositoryImpl(HeaderDao headerDao,
                               ContractDao contractDao,
-                              TransactionDao transactionDao) {
+                              TransactionDao transactionDao,
+                              SyncHeightDao syncHeightDao) {
         this.headerDao = headerDao;
         this.transactionDao = transactionDao;
         this.contractDao = contractDao;
+        this.syncHeightDao = syncHeightDao;
     }
 
     @Override
@@ -222,6 +226,37 @@ public class CoreRepositoryImpl implements CoreRepository {
                 return new String(contractEntity.code);
             }
         }).orElse(null);
+    }
+
+    @Override
+    public double getAverageRate() {
+        SyncHeightEntity entity = syncHeightDao.findBySyncName("block_height");
+        HeaderEntity end = headerDao.findByHeight(entity.height).orElseThrow(RuntimeException::new);
+        HeaderEntity start = headerDao.findByHeight(1L).orElseThrow(RuntimeException::new);
+        return (end.createdAt.getTime() - start.createdAt.getTime()) * 1.0 / 1000 / (entity.height - 1);
+    }
+
+    @Override
+    public List<Block.Transaction> getTransactionListByAddress(String address) {
+        return transactionDao.findByFromOrTo(address,address).stream().sorted(Comparator.comparing(TransactionEntity::getCreatedAt).reversed()).map(x ->
+                Block.Transaction.builder()
+                        .amount(x.amount)
+                        .from(x.from)
+                        .gasPrice(x.gasPrice)
+                        .nonce(x.nonce)
+                        .payload(Hex.toHexString(x.payload))
+                        .signature(x.signature)
+                        .hash(x.txHash)
+                        .type(x.type)
+                        .version(x.version)
+                        .to(x.to)
+                        .fee(x.fee)
+                        .createdAt(x.createdAt)
+                        .gasLimit(x.gasLimit)
+                        .position(x.position)
+                        .size(x.size)
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @Override

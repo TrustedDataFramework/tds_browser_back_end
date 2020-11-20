@@ -2,6 +2,9 @@ package org.wisdom.tds_browser.entity;
 
 import lombok.NonNull;
 import org.bouncycastle.util.encoders.Hex;
+import org.springframework.util.StringUtils;
+import org.tdf.common.util.HexBytes;
+import org.tdf.sunflower.state.Address;
 import org.wisdom.tds_browser.data.Block;
 
 import java.util.List;
@@ -26,7 +29,7 @@ public class Mapping {
     public static TransactionEntity getEntityFromTransaction(Block block, @NonNull Block.Transaction tx) {
         return TransactionEntity.builder()
                 .amount(tx.amount)
-                .from(tx.from)
+                .from(StringUtils.isEmpty(tx.from) ? "" : Address.fromPublicKey(HexBytes.decode(tx.from)).toHex())
                 .gasPrice(tx.gasPrice)
                 .gasLimit(tx.gasLimit)
                 .signature(tx.signature)

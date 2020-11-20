@@ -15,4 +15,6 @@ public interface TransactionDao extends JpaRepository<TransactionEntity, String>
 
     List<TransactionEntity> findByTypeAndTo(int type, String to);
 
+    List<TransactionEntity> findByFromOrTo(String from, String to);
+
 }

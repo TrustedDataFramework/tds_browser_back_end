@@ -42,9 +42,15 @@ public class BlockController {
     @GetMapping("/get_transaction_by_to")
     @ResponseBody
     public APIResult<Page<Block.Transaction>> getTransactionByTo(@RequestParam(value = "to") String to,
-                                                      @RequestParam(value = "per_page") Integer perPage,
-                                                      @RequestParam(value = "page") Integer page) {
-        return  APIResult.newSuccess(PageTool.getPageList(coreRepository.getTransactionByTo(to), page, perPage));
+                                                                 @RequestParam(value = "per_page") Integer perPage,
+                                                                 @RequestParam(value = "page") Integer page) {
+        return APIResult.newSuccess(PageTool.getPageList(coreRepository.getTransactionByTo(to), page, perPage));
+    }
+
+    @GetMapping("/get_average rate")
+    @ResponseBody
+    public APIResult<Double> getAverageRate() {
+        return APIResult.newSuccess(coreRepository.getAverageRate());
     }
 
     @GetMapping("/get_block_by_hash")
@@ -65,6 +71,14 @@ public class BlockController {
     public APIResult<Page<Block>> getBlockList(@RequestParam(value = "per_page") Integer perPage,
                                                @RequestParam(value = "page") Integer page) {
         return APIResult.newSuccess(coreRepository.getBlockList(PageRequest.of(page, perPage, Sort.Direction.DESC, "height")));
+    }
+
+    @GetMapping("/get_transaction_list_by_address")
+    @ResponseBody
+    public APIResult<Page<Block.Transaction>> getTransactionListByAddress(@RequestParam(value = "address") String address,
+                                                                          @RequestParam(value = "per_page") Integer perPage,
+                                                                          @RequestParam(value = "page") Integer page) {
+        return APIResult.newSuccess(PageTool.getPageList(coreRepository.getTransactionListByAddress(address), page, perPage));
     }
 
 }

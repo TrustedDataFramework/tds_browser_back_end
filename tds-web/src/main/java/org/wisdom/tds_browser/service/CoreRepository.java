@@ -40,4 +40,8 @@ public interface CoreRepository {
     Pair<Boolean, String>  getPayloadByAddress(String address);
 
     String getCodeByAddress(String address);
+
+    double getAverageRate();
+
+    List<Block.Transaction> getTransactionListByAddress(String address);
 }
