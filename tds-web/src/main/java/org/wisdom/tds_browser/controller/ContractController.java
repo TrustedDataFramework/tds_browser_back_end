@@ -3,6 +3,7 @@ package org.wisdom.tds_browser.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.wisdom.tds_browser.bean.Abi;
 import org.wisdom.tds_browser.bean.Block;
 import org.wisdom.tds_browser.bean.Contract;
@@ -10,6 +11,8 @@ import org.wisdom.tds_browser.bean.Pair;
 import org.wisdom.tds_browser.result.APIResult;
 import org.wisdom.tds_browser.service.CoreRepository;
 import org.wisdom.tds_browser.tool.PageTool;
+
+import java.io.IOException;
 
 
 @RestController
@@ -56,8 +59,8 @@ public class ContractController {
 
     @RequestMapping(value = "/upload_contract_code", method = RequestMethod.POST)
     @ResponseBody
-    public APIResult<String> uploadContractCode(@RequestParam(value= "code") String code,
-                                                @RequestParam(value = "address") String address) {
+    public APIResult<String> uploadContractCode(@RequestParam(value= "code") MultipartFile code,
+                                                @RequestParam(value = "address") String address) throws IOException {
         Pair<Boolean, String> pair = coreRepository.uploadContractCode(code, address);
         if (pair.key) {
             return APIResult.newSuccess(pair.value);

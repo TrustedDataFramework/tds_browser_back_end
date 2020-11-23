@@ -6,6 +6,7 @@ import org.bouncycastle.util.encoders.Hex;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import org.wisdom.tds_browser.bean.Abi;
 import org.wisdom.tds_browser.bean.Block;
 import org.wisdom.tds_browser.bean.Contract;
@@ -20,6 +21,7 @@ import org.wisdom.tds_browser.entity.SyncHeightEntity;
 import org.wisdom.tds_browser.entity.TransactionEntity;
 import org.wisdom.tds_browser.tool.NodeTool;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -149,7 +151,7 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
-    public Pair<Boolean, String> uploadContractCode(String code, String address) {
+    public Pair<Boolean, String> uploadContractCode(MultipartFile code, String address) throws IOException {
         Optional<ContractEntity> entity = contractDao.findByAddress(address);
         if (!entity.isPresent()) {
             return Pair.with(false, "contract address is not exist");
