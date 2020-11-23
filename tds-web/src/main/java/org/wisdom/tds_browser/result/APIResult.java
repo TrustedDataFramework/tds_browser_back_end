@@ -1,8 +1,8 @@
 package org.wisdom.tds_browser.result;
 
 public class APIResult<T> extends ResultSupport {
-    public static int FAIL = 5000;
-    public static int SUCCESS = 2000;
+    public static int FAIL = 500;
+    public static int SUCCESS = 200;
     protected T data;
 
     public T getData() {
