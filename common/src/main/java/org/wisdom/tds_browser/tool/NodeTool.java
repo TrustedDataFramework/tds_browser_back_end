@@ -67,4 +67,11 @@ public class NodeTool {
         return JSON.parseObject(body).getJSONObject("data").getLong("height");
     }
 
+    public String stat() {
+        return HttpRequest.get(nodeUrl + "/rpc/stat")
+                .connectTimeout(5000)
+                .readTimeout(5000)
+                .body();
+    }
+
 }

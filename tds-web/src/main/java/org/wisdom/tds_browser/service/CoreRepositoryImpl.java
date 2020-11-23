@@ -18,6 +18,7 @@ import org.wisdom.tds_browser.entity.ContractEntity;
 import org.wisdom.tds_browser.entity.HeaderEntity;
 import org.wisdom.tds_browser.entity.SyncHeightEntity;
 import org.wisdom.tds_browser.entity.TransactionEntity;
+import org.wisdom.tds_browser.tool.NodeTool;
 
 import java.util.Comparator;
 import java.util.List;
@@ -32,15 +33,18 @@ public class CoreRepositoryImpl implements CoreRepository {
     private final TransactionDao transactionDao;
     private final ContractDao contractDao;
     private final SyncHeightDao syncHeightDao;
+    private final NodeTool nodeTool;
 
     public CoreRepositoryImpl(HeaderDao headerDao,
                               ContractDao contractDao,
                               TransactionDao transactionDao,
-                              SyncHeightDao syncHeightDao) {
+                              SyncHeightDao syncHeightDao,
+                              NodeTool nodeTool) {
         this.headerDao = headerDao;
         this.transactionDao = transactionDao;
         this.contractDao = contractDao;
         this.syncHeightDao = syncHeightDao;
+        this.nodeTool = nodeTool;
     }
 
     @Override
@@ -238,7 +242,7 @@ public class CoreRepositoryImpl implements CoreRepository {
 
     @Override
     public List<Block.Transaction> getTransactionListByAddress(String address) {
-        return transactionDao.findByFromOrTo(address,address).stream().sorted(Comparator.comparing(TransactionEntity::getCreatedAt).reversed()).map(x ->
+        return transactionDao.findByFromOrTo(address, address).stream().sorted(Comparator.comparing(TransactionEntity::getCreatedAt).reversed()).map(x ->
                 Block.Transaction.builder()
                         .amount(x.amount)
                         .from(x.from)
@@ -257,6 +261,11 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .size(x.size)
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String stat() {
+        return nodeTool.stat();
     }
 
     @Override

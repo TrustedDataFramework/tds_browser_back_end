@@ -1,13 +1,12 @@
 package org.wisdom.tds_browser.controller;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import org.wisdom.tds_browser.bean.Block;
 import org.wisdom.tds_browser.result.APIResult;
 import org.wisdom.tds_browser.service.CoreRepository;
@@ -79,6 +78,12 @@ public class BlockController {
                                                                           @RequestParam(value = "per_page") Integer perPage,
                                                                           @RequestParam(value = "page") Integer page) {
         return APIResult.newSuccess(PageTool.getPageList(coreRepository.getTransactionListByAddress(address), page, perPage));
+    }
+
+    @GetMapping(value = "/stat", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Object stat(){
+        return JSON.parse(coreRepository.stat());
     }
 
 }

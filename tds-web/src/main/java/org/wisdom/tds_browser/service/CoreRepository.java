@@ -44,4 +44,6 @@ public interface CoreRepository {
     double getAverageRate();
 
     List<Block.Transaction> getTransactionListByAddress(String address);
+
+    String stat();
 }
