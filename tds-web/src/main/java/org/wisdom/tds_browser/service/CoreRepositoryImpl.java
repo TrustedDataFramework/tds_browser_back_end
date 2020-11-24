@@ -156,7 +156,7 @@ public class CoreRepositoryImpl implements CoreRepository {
         if (!entity.isPresent()) {
             return Pair.with(false, "contract address is not exist");
         }
-        if (entity.get().code == null) {
+        if (entity.get().code != null) {
             return Pair.with(false, "code has been exist");
         }
         ContractEntity contractEntity = entity.get();
