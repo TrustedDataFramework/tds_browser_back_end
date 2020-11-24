@@ -49,4 +49,6 @@ public interface CoreRepository {
     String stat();
 
     String pool();
+
+    String getAccount(String addressOrPublicKey);
 }

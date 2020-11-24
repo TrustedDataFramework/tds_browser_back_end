@@ -92,4 +92,9 @@ public class BlockController {
         return JSON.parse(coreRepository.pool());
     }
 
+    @GetMapping(value = "/account/{addressOrPublicKey}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object getAccount(@PathVariable String addressOrPublicKey) {
+        return JSON.parse(coreRepository.getAccount(addressOrPublicKey));
+    }
+
 }

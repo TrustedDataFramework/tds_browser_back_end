@@ -80,4 +80,11 @@ public class NodeTool {
                 .readTimeout(5000)
                 .body();
     }
+
+    public String getAccount(String addressOrPublicKey) {
+        return HttpRequest.get(nodeUrl + "/rpc/account/" + addressOrPublicKey)
+                .connectTimeout(5000)
+                .readTimeout(5000)
+                .body();
+    }
 }
