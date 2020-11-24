@@ -13,8 +13,6 @@ services:
        DB_USER: tds
        DB_NAME: tds_test
 
-
-
   eureka-server:
     image: wisdomchain/eureka-server:latest
     container_name: eureka-server
