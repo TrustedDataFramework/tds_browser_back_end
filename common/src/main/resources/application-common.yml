@@ -24,4 +24,4 @@ spring:
 
 
 dandelion:
-  peers: ${NODE_URL:http://localhost:7010}
+  peers: ${NODE_URL:http://192.168.1.13:7010}

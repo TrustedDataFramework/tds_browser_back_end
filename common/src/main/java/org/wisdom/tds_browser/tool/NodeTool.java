@@ -74,4 +74,10 @@ public class NodeTool {
                 .body();
     }
 
+    public String pool() {
+        return HttpRequest.get(nodeUrl + "/rpc/pool")
+                .connectTimeout(5000)
+                .readTimeout(5000)
+                .body();
+    }
 }

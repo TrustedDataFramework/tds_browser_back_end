@@ -274,6 +274,11 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
+    public String pool() {
+        return nodeTool.pool();
+    }
+
+    @Override
     public Block.Transaction getTransactionByTxHash(String txHash) {
         Optional<TransactionEntity> op = transactionDao.findById(txHash);
         if (!op.isPresent()) return null;

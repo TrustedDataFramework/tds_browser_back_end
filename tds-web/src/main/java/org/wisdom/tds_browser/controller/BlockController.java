@@ -86,4 +86,10 @@ public class BlockController {
         return JSON.parse(coreRepository.stat());
     }
 
+    @GetMapping(value = "/pool", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Object pool(){
+        return JSON.parse(coreRepository.pool());
+    }
+
 }

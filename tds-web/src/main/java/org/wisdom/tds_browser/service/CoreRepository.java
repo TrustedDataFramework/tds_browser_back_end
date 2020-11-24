@@ -47,4 +47,6 @@ public interface CoreRepository {
     List<Block.Transaction> getTransactionListByAddress(String address);
 
     String stat();
+
+    String pool();
 }
