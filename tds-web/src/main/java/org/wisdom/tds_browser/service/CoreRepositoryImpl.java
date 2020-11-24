@@ -75,7 +75,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                     .fee(entity.fee)
                     .createdAt(entity.createdAt)
                     .build();
-        }).collect(Collectors.toList());
+        }).sorted(Comparator.comparing(Contract::getCreatedAt).reversed()).collect(Collectors.toList());
     }
 
     @Override
@@ -97,7 +97,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .gasLimit(x.gasLimit)
                         .position(x.position)
                         .size(x.size)
-                        .build()).collect(Collectors.toList());
+                        .build()).sorted(Comparator.comparing(Block.Transaction::getCreatedAt).reversed()).collect(Collectors.toList());
     }
 
     @Override

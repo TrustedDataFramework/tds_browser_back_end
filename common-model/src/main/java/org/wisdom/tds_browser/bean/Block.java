@@ -53,6 +53,7 @@ public class Block implements Serializable {
 
     @AllArgsConstructor
     @Builder
+    @Getter
     public static class Transaction implements Serializable {
         public String hash;
         public int version;
