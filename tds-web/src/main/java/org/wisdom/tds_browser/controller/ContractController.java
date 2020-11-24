@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.wisdom.tds_browser.bean.Abi;
-import org.wisdom.tds_browser.bean.Block;
-import org.wisdom.tds_browser.bean.Contract;
-import org.wisdom.tds_browser.bean.Pair;
+import org.wisdom.tds_browser.bean.*;
 import org.wisdom.tds_browser.result.APIResult;
 import org.wisdom.tds_browser.service.CoreRepository;
 import org.wisdom.tds_browser.tool.PageTool;
@@ -48,7 +45,6 @@ public class ContractController {
     }
 
 
-
     @GetMapping("/get_code_by_address")
     @ResponseBody
     public APIResult<String> getCodeByAddress(@RequestParam(value = "address") String address) {
@@ -56,12 +52,10 @@ public class ContractController {
     }
 
 
-
     @RequestMapping(value = "/upload_contract_code", method = RequestMethod.POST)
     @ResponseBody
-    public APIResult<String> uploadContractCode(@RequestParam(value= "code") MultipartFile code,
-                                                @RequestParam(value = "address") String address) throws IOException {
-        Pair<Boolean, String> pair = coreRepository.uploadContractCode(code, address);
+    public APIResult<String> uploadContractCode(@RequestBody ContractCode contractCode) throws IOException {
+        Pair<Boolean, String> pair = coreRepository.uploadContractCode(contractCode.code, contractCode.address);
         if (pair.key) {
             return APIResult.newSuccess(pair.value);
         }
@@ -77,7 +71,7 @@ public class ContractController {
 
     @GetMapping("/get_contract_by_hash")
     @ResponseBody
-    public APIResult<Contract> getContractByHash(@RequestParam(value = "hash") String hash){
+    public APIResult<Contract> getContractByHash(@RequestParam(value = "hash") String hash) {
         return APIResult.newSuccess(coreRepository.getContractByHash(hash));
     }
 

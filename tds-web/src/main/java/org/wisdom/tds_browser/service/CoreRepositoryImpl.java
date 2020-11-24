@@ -151,10 +151,13 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
-    public Pair<Boolean, String> uploadContractCode(MultipartFile code, String address) throws IOException {
+    public Pair<Boolean, String> uploadContractCode(String code, String address) {
         Optional<ContractEntity> entity = contractDao.findByAddress(address);
         if (!entity.isPresent()) {
             return Pair.with(false, "contract address is not exist");
+        }
+        if (entity.get().code.length != 0) {
+            return Pair.with(false, "code has been exist");
         }
         ContractEntity contractEntity = entity.get();
         contractEntity.code = code.getBytes();

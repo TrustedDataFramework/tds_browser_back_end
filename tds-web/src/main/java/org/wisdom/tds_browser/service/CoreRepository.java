@@ -2,7 +2,6 @@ package org.wisdom.tds_browser.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.multipart.MultipartFile;
 import org.wisdom.tds_browser.bean.Abi;
 import org.wisdom.tds_browser.bean.Block;
 import org.wisdom.tds_browser.bean.Contract;
@@ -29,7 +28,7 @@ public interface CoreRepository {
 
     Pair<Boolean, Abi> getABIByAddress(String address);
 
-    Pair<Boolean, String> uploadContractCode(MultipartFile code, String address) throws IOException;
+    Pair<Boolean, String> uploadContractCode(String code, String address) throws IOException;
 
     Block getBlockByHash(String hash);
 
