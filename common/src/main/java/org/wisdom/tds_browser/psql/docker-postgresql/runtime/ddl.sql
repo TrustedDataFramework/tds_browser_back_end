@@ -20,7 +20,7 @@ CREATE TABLE if not exists "header" (
 "tx_root" varchar(255) NOT NULL,
 "state_root" varchar(255) NOT NULL,
 "height" int8 NOT NULL,
-"payload" varchar(255) NOT NULL,
+"payload" bytea,
 "block_size" int8 NOT NULL,
 "created_at" TIMESTAMP(0)  without time zone default (now() at time zone 'utc'),
 CONSTRAINT "header_pkey" PRIMARY KEY ( "block_hash" )
