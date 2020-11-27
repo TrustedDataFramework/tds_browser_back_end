@@ -73,6 +73,8 @@ public class Block implements Serializable {
         public long fee;
         public long size;
         public int position;
+        @JsonProperty("block_height")
+        public long blockHeight;
 
         @Override
         public String toString() {

@@ -115,6 +115,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .version(x.version)
                         .to(x.to)
                         .fee(x.fee)
+                        .blockHeight(headerDao.findByBlockHash(x.blockHash).orElseThrow(RuntimeException::new).height)
                         .createdAt(x.createdAt)
                         .gasLimit(x.gasLimit)
                         .position(x.position)
@@ -140,6 +141,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .createdAt(x.createdAt)
                         .gasLimit(x.gasLimit)
                         .position(x.position)
+                        .blockHeight(headerDao.findByBlockHash(x.blockHash).orElseThrow(RuntimeException::new).height)
                         .size(x.size)
                         .build()).collect(Collectors.toList());
     }
@@ -188,6 +190,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .fee(x.fee)
                         .createdAt(x.createdAt)
                         .gasLimit(x.gasLimit)
+                        .blockHeight(headerDao.findByBlockHash(x.blockHash).orElseThrow(RuntimeException::new).height)
                         .position(x.position)
                         .size(x.size)
                         .build());
@@ -258,6 +261,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .hash(x.txHash)
                         .type(x.type)
                         .version(x.version)
+                        .blockHeight(headerDao.findByBlockHash(x.blockHash).orElseThrow(RuntimeException::new).height)
                         .to(x.to)
                         .fee(x.fee)
                         .createdAt(x.createdAt)
