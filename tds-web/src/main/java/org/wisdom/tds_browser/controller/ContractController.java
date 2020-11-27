@@ -3,7 +3,6 @@ package org.wisdom.tds_browser.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.wisdom.tds_browser.bean.*;
 import org.wisdom.tds_browser.result.APIResult;
 import org.wisdom.tds_browser.service.CoreRepository;
