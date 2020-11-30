@@ -114,7 +114,7 @@ public class BlockJob {
         }
     }
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void writeBlock(Block block) {
         HeaderEntity entity = Mapping.getEntityFromHeader(block);
         headerDao.save(entity);
