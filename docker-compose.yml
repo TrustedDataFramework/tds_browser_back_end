@@ -33,7 +33,7 @@ services:
       HOST_NAME: 'eureka-server'
 
   sync-service:
-    image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/eureka-server/sync-service:v1.0.0
+    image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/sync-service:v1.0.0
     container_name: sync-service
     restart: always
     ports:
@@ -46,7 +46,7 @@ services:
       NODE_URL: 'http://192.168.1.13:7011'
 
   tds-web:
-    image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/eureka-server/tds-web:v1.0.0
+    image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/tds-web:v1.0.0
     container_name: tds-web
     restart: always
     ports:
