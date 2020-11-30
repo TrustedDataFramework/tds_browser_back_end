@@ -117,8 +117,8 @@ public class BlockJob {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void writeBlock(Block block) {
         HeaderEntity entity = Mapping.getEntityFromHeader(block);
-        headerDao.save(entity);
         transactionDao.saveAll(Mapping.getEntitiesFromTransactions(block));
+        headerDao.save(entity);
         if (block.rawData != null && block.rawData.size() != 0) {
             block.rawData.forEach(x -> {
                 try {
