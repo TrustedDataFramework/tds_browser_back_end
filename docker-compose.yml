@@ -1,8 +1,17 @@
 version: '3'
 services:
 
+  nginx:
+    image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/tds_nginx:v1.0.0
+    container_name: nginx
+    restart: always
+    ports:
+      - 8181:8181
+    volumes:
+      - /opt/nginx/log:/var/log/nginx
+
   tds_psql:
-     image: wisdomchain/tds_psql:latest
+     image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/tds_psql:v1.0.0
      container_name: tds_psql
      ports:
         - 5432:5432
@@ -14,7 +23,7 @@ services:
        DB_NAME: tds_test
 
   eureka-server:
-    image: wisdomchain/eureka-server:latest
+    image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/eureka-server:v1.0.0
     container_name: eureka-server
     restart: always
     hostname: eureka-server
@@ -24,7 +33,7 @@ services:
       HOST_NAME: 'eureka-server'
 
   sync-service:
-    image: wisdomchain/sync-service:latest
+    image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/eureka-server/sync-service:v1.0.0
     container_name: sync-service
     restart: always
     ports:
@@ -34,10 +43,10 @@ services:
       DATA_SOURCE_URL: 'jdbc:postgresql://tds_psql:5432/tds_test'
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
-      NODE_URL: 'http://192.168.1.52:7010'
+      NODE_URL: 'http://192.168.1.13:7011'
 
   tds-web:
-    image: wisdomchain/tds-web:latest
+    image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/eureka-server/tds-web:v1.0.0
     container_name: tds-web
     restart: always
     ports:
@@ -47,4 +56,4 @@ services:
       DATA_SOURCE_URL: 'jdbc:postgresql://tds_psql:5432/tds_test'
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
-      NODE_URL: 'http://192.168.1.52:7010'
+      NODE_URL: 'http://192.168.1.13:7011'

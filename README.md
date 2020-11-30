@@ -2,13 +2,13 @@
 
 ### 构建tds_psql镜像,在Dockerfile所在目录中
 ```shell
-docker build --tag=wisdomchain/tds_psql .
+docker build --tag=registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/tds_psql .
 ```
 
 ### 拉取镜像
 
 ```shell
-docker pull wisdomchain/tds_psql:latest
+docker pull registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/tds_psql:latest
 ```
 
 ### docker-compose中编写
@@ -18,7 +18,7 @@ version: '3'
 services:
 
   tds_psql:
-     image: wisdomchain/tds_psql:latest
+     image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/tds_psql:latest
      container_name: tds_psql
      ports:
         - 5432:5432
