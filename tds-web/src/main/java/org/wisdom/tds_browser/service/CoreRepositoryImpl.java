@@ -346,4 +346,9 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .collect(Collectors.toList()))
                 .build();
     }
+
+    @Override
+    public String getVersion(){
+        return  "v1.0.0";
+    };
 }

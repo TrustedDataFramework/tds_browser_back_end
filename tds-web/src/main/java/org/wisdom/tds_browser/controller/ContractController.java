@@ -82,4 +82,10 @@ public class ContractController {
         return APIResult.newSuccess(PageTool.getPageList(coreRepository.getCallContractList(address), page, perPage));
     }
 
+    @GetMapping("/version")
+    @ResponseBody
+    public APIResult<String> getVersion() {
+        return APIResult.newSuccess(coreRepository.getVersion());
+    }
+
 }

@@ -51,4 +51,6 @@ public interface CoreRepository {
     String pool();
 
     String getAccount(String addressOrPublicKey);
+
+    String getVersion();
 }
