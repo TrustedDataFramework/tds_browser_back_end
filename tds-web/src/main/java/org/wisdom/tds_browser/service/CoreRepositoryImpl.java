@@ -249,8 +249,8 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
-    public List<Block.Transaction> getTransactionListByAddress(String address) {
-        return transactionDao.findByFromOrTo(address, address).stream().sorted(Comparator.comparing(TransactionEntity::getCreatedAt).reversed()).map(x ->
+    public Page<Block.Transaction> getTransactionListByAddress(String address, Pageable pageable) {
+        return transactionDao.findByFromOrTo(address, address,pageable).map(x ->
                 Block.Transaction.builder()
                         .amount(x.amount)
                         .from(x.from)
@@ -268,8 +268,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .gasLimit(x.gasLimit)
                         .position(x.position)
                         .size(x.size)
-                        .build())
-                .collect(Collectors.toList());
+                        .build());
     }
 
     @Override

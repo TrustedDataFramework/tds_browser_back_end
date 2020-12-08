@@ -44,7 +44,7 @@ public interface CoreRepository {
 
     double getAverageRate();
 
-    List<Block.Transaction> getTransactionListByAddress(String address);
+    Page<Block.Transaction> getTransactionListByAddress(String address, Pageable pageable);
 
     String stat();
 

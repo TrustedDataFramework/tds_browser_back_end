@@ -77,7 +77,7 @@ public class BlockController {
     public APIResult<Page<Block.Transaction>> getTransactionListByAddress(@RequestParam(value = "address") String address,
                                                                           @RequestParam(value = "per_page") Integer perPage,
                                                                           @RequestParam(value = "page") Integer page) {
-        return APIResult.newSuccess(PageTool.getPageList(coreRepository.getTransactionListByAddress(address), page, perPage));
+        return APIResult.newSuccess(coreRepository.getTransactionListByAddress(address,(PageRequest.of(page, perPage, Sort.Direction.DESC, "createdAt"))));
     }
 
     @GetMapping(value = "/stat", produces = MediaType.APPLICATION_JSON_VALUE)
