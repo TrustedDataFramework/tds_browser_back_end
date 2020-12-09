@@ -42,7 +42,7 @@ public class BlockJob {
 
     private final TransactionDao transactionDao;
 
-    public final static int differHeight = 3;
+    public final static int differHeight = 0;
 
     public final static int defaultSyncSize = 50;
 
