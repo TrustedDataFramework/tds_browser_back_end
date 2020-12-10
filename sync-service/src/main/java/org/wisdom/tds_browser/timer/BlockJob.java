@@ -98,10 +98,9 @@ public class BlockJob {
                 long blockSize = Math.min(nodeHeight - height, defaultSyncSize);
                 for (int i = 0; i <= blockSize; i++) {
                     Block block = nodeTool.getBlocks(height + i);
-                    if (block.height <= height) {
+                    if (block.height < height) {
                         continue;
                     }
-                    System.out.println(block.toString());
                     writeBlock(block);
                 }
                 entity.height = nodeTool.getBlocks(height + blockSize).height;

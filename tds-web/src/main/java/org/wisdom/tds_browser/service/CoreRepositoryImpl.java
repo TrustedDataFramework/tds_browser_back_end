@@ -243,9 +243,12 @@ public class CoreRepositoryImpl implements CoreRepository {
     @Override
     public double getAverageRate() {
         SyncHeightEntity entity = syncHeightDao.findBySyncName("block_height");
+        if (entity.height == 0){
+            return 0;
+        }
         HeaderEntity end = headerDao.findByHeight(entity.height).orElseThrow(RuntimeException::new);
-        HeaderEntity start = headerDao.findByHeight(1L).orElseThrow(RuntimeException::new);
-        return (end.createdAt.getTime() - start.createdAt.getTime()) * 1.0 / 1000 / (entity.height - 1);
+        HeaderEntity start = headerDao.findByHeight(0L).orElseThrow(RuntimeException::new);
+        return (end.createdAt.getTime() - start.createdAt.getTime()) * 1.0 / 1000 / entity.height;
     }
 
     @Override
