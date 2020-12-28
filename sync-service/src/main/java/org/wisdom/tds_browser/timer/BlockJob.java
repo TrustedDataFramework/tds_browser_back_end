@@ -27,6 +27,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -101,7 +102,10 @@ public class BlockJob {
                     if (block.height < height) {
                         continue;
                     }
-                    writeBlock(block);
+                    Optional<HeaderEntity> op = headerDao.findByHeight(block.height);
+                    if (!op.isPresent()) {
+                        writeBlock(block);
+                    }
                 }
                 entity.height = nodeTool.getBlocks(height + blockSize).height;
                 syncHeightDao.save(entity);

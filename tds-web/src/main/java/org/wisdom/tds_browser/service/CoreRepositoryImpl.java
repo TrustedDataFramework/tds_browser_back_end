@@ -21,7 +21,7 @@ import org.wisdom.tds_browser.entity.SyncHeightEntity;
 import org.wisdom.tds_browser.entity.TransactionEntity;
 import org.wisdom.tds_browser.tool.NodeTool;
 
-import java.io.IOException;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
