@@ -9,7 +9,7 @@ services:
       - 8181:8181
     volumes:
       - /opt/nginx/log:/var/log/nginx
-    network_mode:
+    networks:
       - tds_browser
 
   tds_psql:
@@ -23,7 +23,7 @@ services:
        DB_PASS: 123456
        DB_USER: tds
        DB_NAME: tds_test
-     network_mode:
+     networks:
        - tds_browser
 
   eureka-server:
@@ -35,7 +35,7 @@ services:
       - 8761:8761
     environment:
       HOST_NAME: 'eureka-server'
-    network_mode:
+    networks:
       - tds_browser
 
   sync-service:
@@ -50,7 +50,7 @@ services:
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
       NODE_URL: 'http://192.168.1.13:7011'
-    network_mode:
+    networks:
       - tds_browser
 
   tds-web:
@@ -65,7 +65,7 @@ services:
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
       NODE_URL: 'http://192.168.1.13:7011'
-    network_mode:
+    networks:
       - tds_browser
 
   networks:
