@@ -9,6 +9,8 @@ services:
       - 8181:8181
     volumes:
       - /opt/nginx/log:/var/log/nginx
+    network_mode:
+      - tds_browser
 
   tds_psql:
      image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/tds_psql:v1.0.0
@@ -21,6 +23,8 @@ services:
        DB_PASS: 123456
        DB_USER: tds
        DB_NAME: tds_test
+     network_mode:
+       - tds_browser
 
   eureka-server:
     image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/eureka-server:v1.0.0
@@ -31,6 +35,8 @@ services:
       - 8761:8761
     environment:
       HOST_NAME: 'eureka-server'
+    network_mode:
+      - tds_browser
 
   sync-service:
     image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/sync-service:v1.0.0
@@ -44,6 +50,8 @@ services:
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
       NODE_URL: 'http://192.168.1.13:7011'
+    network_mode:
+      - tds_browser
 
   tds-web:
     image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/tds-web:v1.0.0
@@ -57,3 +65,9 @@ services:
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
       NODE_URL: 'http://192.168.1.13:7011'
+    network_mode:
+      - tds_browser
+
+  networks:
+    tds_browser:
+      driver: host
