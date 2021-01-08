@@ -3,26 +3,24 @@ services:
 
   nginx:
     image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/tds_nginx:v1.0.0
-    container_name: nginx
+    container_name: nginx_tds
     restart: always
     ports:
       - 8181:8181
     volumes:
       - /opt/nginx/log:/var/log/nginx
-    network_mode: "host"
 
   tds_psql:
-     image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/tds_psql:v1.0.0
-     container_name: tds_psql
-     ports:
-        - 5432:5432
-     volumes:
-       - /opt/tds_psql:/var/lib/postgresql
-     environment:
-       DB_PASS: 123456
-       DB_USER: tds
-       DB_NAME: tds_test
-     network_mode: "host"
+    image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/tds_psql:v1.0.0
+    container_name: tds_psql
+    ports:
+      - 5432
+    volumes:
+      - /opt/tds_psql:/var/lib/postgresql
+    environment:
+      DB_PASS: 123456
+      DB_USER: tds
+      DB_NAME: tds_test
 
   eureka-server:
     image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/eureka-server:v1.0.0
@@ -30,35 +28,32 @@ services:
     restart: always
     hostname: eureka-server
     ports:
-      - 8761:8761
+      - 8761
     environment:
       HOST_NAME: 'eureka-server'
-    network_mode: "host"
 
   sync-service:
     image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/sync-service:v1.0.0
     container_name: sync-service
     restart: always
     ports:
-      - 9092:9092
+      - 9092
     environment:
       EUREKA_SERVICE_URL: 'http://eureka-server:8761'
       DATA_SOURCE_URL: 'jdbc:postgresql://tds_psql:5432/tds_test'
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
-      NODE_URL: 'http://192.168.1.13:7011'
-    network_mode: "host"
+      NODE_URL: 'http://120.76.101.153:7010'
 
   tds-web:
     image: registry.cn-hangzhou.aliyuncs.com/tdf_hangzhou/tds-web:v1.0.0
     container_name: tds-web
     restart: always
     ports:
-      - 8080:8080
+      - 8080
     environment:
       EUREKA_SERVICE_URL: 'http://eureka-server:8761'
       DATA_SOURCE_URL: 'jdbc:postgresql://tds_psql:5432/tds_test'
       DB_USERNAME: 'tds'
       DB_PASSWORD: '123456'
-      NODE_URL: 'http://192.168.1.13:7011'
-    network_mode: "host"
+      NODE_URL: 'http://120.76.101.153:7010'
