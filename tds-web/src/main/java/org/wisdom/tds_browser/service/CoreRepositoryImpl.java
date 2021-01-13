@@ -75,7 +75,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                     .fee(entity.fee)
                     .createdAt(entity.createdAt)
                     .build();
-        }).sorted(Comparator.comparing(Contract::getCreatedAt).reversed()).collect(Collectors.toList());
+        }).sorted(Comparator.comparing(Contract::getHeight).reversed()).collect(Collectors.toList());
     }
 
     @Override
