@@ -1,14 +1,9 @@
 package org.wisdom.tds_browser;
 
-import lombok.SneakyThrows;
-import org.omg.CORBA.portable.ApplicationException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.util.ClassUtils;
 import org.tdf.crypto.CryptoHelpers;
 import org.tdf.crypto.ed25519.Ed25519;
