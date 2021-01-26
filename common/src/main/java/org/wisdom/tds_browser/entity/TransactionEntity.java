@@ -40,6 +40,8 @@ public class TransactionEntity {
 
     static final String COLUMN_TX_SIZE = "size";
 
+    static final String COLUMN_BLOCK_HEIGHT = "height";
+
     @Column(name = COLUMN_BLOCK_HASH, nullable = false)
     public String blockHash;
 
@@ -88,5 +90,8 @@ public class TransactionEntity {
 
     @Column(name = COLUMN_TX_CREATED_AT, nullable = false)
     public Date createdAt;
+
+    @Column(name = COLUMN_BLOCK_HEIGHT, nullable = false)
+    public long height;
 
 }

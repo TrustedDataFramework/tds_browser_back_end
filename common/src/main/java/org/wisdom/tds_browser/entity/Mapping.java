@@ -44,6 +44,7 @@ public class Mapping {
                 .size(tx.size)
                 .type(tx.type)
                 .version(tx.version)
+                .height(block.height)
                 .build();
     }
 

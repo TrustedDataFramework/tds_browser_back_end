@@ -44,6 +44,7 @@ CREATE TABLE if not exists "transaction" (
 "amount" int8,
 "position" int8,
 "block_hash" varchar(255) NOT NULL,
+"height" int8 NOT NULL,
 "payload" bytea,
 "signature" varchar(2000),
 "to" varchar(255),

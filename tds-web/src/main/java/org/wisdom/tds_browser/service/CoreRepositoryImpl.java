@@ -190,7 +190,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .fee(x.fee)
                         .createdAt(x.createdAt)
                         .gasLimit(x.gasLimit)
-                        .blockHeight(headerDao.findByBlockHash(x.blockHash).orElseThrow(RuntimeException::new).height)
+                        .blockHeight(x.height)
                         .position(x.position)
                         .size(x.size)
                         .build());
