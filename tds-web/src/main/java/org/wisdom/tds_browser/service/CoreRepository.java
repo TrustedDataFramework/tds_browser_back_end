@@ -51,8 +51,9 @@ public interface CoreRepository {
 
     String getVersion();
 
-    List<MazeProfit> getFarmnaseMazeProfitList(String txId,String accountAddress,int type,String assetAddress);
+    List<MazeProfit> getFarmnaseMazeProfitList(int chainId,String accountAddress,int type,String assetAddress);
 
     List<MazeProfit> getAll();
 
+    MazeProfit getByMaxAge(String assetAddress, int type, String accountAddress);
 }

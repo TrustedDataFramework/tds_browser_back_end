@@ -40,7 +40,7 @@ public class FarmBaseEntity {
     @Column(name = COLUMN_TRANSCATION_HASH, nullable = false)
     public String transcationHash;
 
-    @Column(name = COLUMN_SMAZE_ACCOUNT, nullable = false)
+    @Column(name = COLUMN_SMAZE_ACCOUNT, nullable = false, length = 30)
     public BigDecimal smazeAccount;
 
     @Column(name = COLUMN_AGE, nullable = false)
@@ -50,19 +50,19 @@ public class FarmBaseEntity {
     public Date createdAt;
 
     @Column(name = COLUMN_CHAINID, nullable = false)
-    public String chainId;
+    public int chainId;
 
     @Column(name = COLUMN_ASSET_ADDRESS, nullable = false)
-    public byte[] assetAddress;
+    public String assetAddress;
 
     @Column(name = COLUMN_TYPE, nullable = false)
     public int type;
 
     @Column(name = COLUMN_ACCOUNT_ADDRESS, nullable = false)
-    public byte[] accountAddress;
+    public String accountAddress;
 
     @Column(name = COLUMN_MAPPING_CONTRACT_ADDRESS)
-    public byte[] mappingContractAddress;
+    public String mappingContractAddress;
 
     @Column(name = COLUMN_OPERATION)
     public String operation;

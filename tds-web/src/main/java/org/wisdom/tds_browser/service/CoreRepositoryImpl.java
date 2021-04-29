@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j(topic = "core")
@@ -348,52 +349,63 @@ public class CoreRepositoryImpl implements CoreRepository {
     }
 
     @Override
-    public List<MazeProfit> getFarmnaseMazeProfitList(String txid,String accountAddress,int type,String assetAddress) {
+    public List<MazeProfit> getFarmnaseMazeProfitList(int chainId,String accountAddress,int type,String assetAddress) {
         List<MazeProfit> list = new ArrayList<>();
-        List<FarmBaseEntity> batchMintEntities = farmBaseDao.findByAccountAddressAndTypeAndChainIdAndAssetAddress(Hex.decode(accountAddress), type,txid,Hex.decode(assetAddress));
-        list = batchMintEntities.stream().map(x ->
-                MazeProfit.builder()
-                        .accountAddress(Hex.toHexString(x.accountAddress))
-                        .age(x.age)
-                        .smazeAccount(x.smazeAccount)
-                        .assetAddress(Hex.toHexString(x.assetAddress))
-                        .blockHeight(x.blockHeight)
-                        .mappingContractAddress(Hex.toHexString(x.mappingContractAddress))
-                        .transcationHash(x.transcationHash)
-                        .chainId(x.chainId)
-                        .type(x.type)
-                        .createdAt(x.createdAt)
-                        .id(x.FarmBaseId)
-                        .operation(x.operation)
-                        .startHeight(x.startHeight)
-                        .endHeight(x.endHeight)
-                        .build()
-        ).collect(Collectors.toList());
+        List<FarmBaseEntity> batchMintEntities;
+        if(type == 2){
+            batchMintEntities = farmBaseDao.findByAccountAddressAndTypeAndChainId(accountAddress, type, chainId);
+        } else {
+            batchMintEntities = farmBaseDao.findByAccountAddressAndTypeAndChainIdAndAssetAddress(accountAddress, type, chainId, assetAddress);
+        }
+        list = batchMintEntities.stream().map(mapper).collect(Collectors.toList());
         return list;
     }
 
     @Override
     public List<MazeProfit> getAll() {
-        return farmBaseDao.findAll().stream().map(x ->
-                MazeProfit.builder()
-                        .accountAddress(Hex.toHexString(x.accountAddress))
-                        .age(x.age)
-                        .smazeAccount(x.smazeAccount)
-                        .assetAddress(Hex.toHexString(x.assetAddress))
-                        .blockHeight(x.blockHeight)
-                        .mappingContractAddress(Hex.toHexString(x.mappingContractAddress))
-                        .transcationHash(x.transcationHash)
-                        .chainId(x.chainId)
-                        .type(x.type)
-                        .createdAt(x.createdAt)
-                        .id(x.FarmBaseId)
-                        .operation(x.operation)
-                        .startHeight(x.startHeight)
-                        .endHeight(x.endHeight)
-                        .build()
-        ).collect(Collectors.toList());
+        return farmBaseDao.findAll().stream().map(mapper).collect(Collectors.toList());
     }
 
+    private Function<FarmBaseEntity, MazeProfit> mapper = x -> MazeProfit.builder()
+            .accountAddress(x.accountAddress)
+            .age(x.age)
+            .smazeAccount(x.smazeAccount)
+            .assetAddress(x.assetAddress)
+            .blockHeight(x.blockHeight)
+            .mappingContractAddress(x.mappingContractAddress)
+            .transcationHash(x.transcationHash)
+            .chainId(Integer.toString(x.chainId))
+            .type(x.type)
+            .createdAt(x.createdAt)
+            .id(x.FarmBaseId)
+            .operation(x.operation)
+            .startHeight(x.startHeight)
+            .endHeight(x.endHeight)
+            .build();
+
+    @Override
+    public MazeProfit getByMaxAge(String assetAddress, int type, String accountAddress) {
+        Optional<Integer> o;
+        List<FarmBaseEntity> list;
+        if(type == 2){
+            o = farmBaseDao.getMaxAgeBylpMaze(type, accountAddress);
+        } else{
+            o = farmBaseDao.getMaxAge(assetAddress, type, accountAddress);
+        }
+
+
+        if (!o.isPresent())
+            return null;
+        int age = o.get();
+        if(type == 2){
+            list = farmBaseDao.getByMaxAgeBylpMaze(type, accountAddress, age);
+        }else{
+            list = farmBaseDao.getByMaxAge(assetAddress, type, accountAddress, age);
+        }
+
+        FarmBaseEntity e = list.get(0);
+        return mapper.apply(e);
+    }
 //    @Override
 //    public List<MazeProfit> getlist() {
 //        List<BatchMintEntity> list1 = batchMintDao.findAll();

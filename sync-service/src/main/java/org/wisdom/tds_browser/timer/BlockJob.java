@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.jcajce.provider.digest.Keccak;
+import org.bouncycastle.util.encoders.Hex;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +44,7 @@ public class BlockJob {
 
     public final static int differHeight = 0;
 
-    public final static int defaultSyncSize = 50;
+    public final static int defaultSyncSize = 500;
 
     private final HeaderDao headerDao;
 
@@ -66,7 +67,7 @@ public class BlockJob {
 
         executorService.scheduleWithFixedDelay(
                 this::getBlocks, 0,
-                3, TimeUnit.SECONDS);
+                1, TimeUnit.SECONDS);
     }
 
     public BlockJob(SyncHeightDao syncHeightDao,
@@ -183,8 +184,8 @@ public class BlockJob {
                             age = list.get(5).asInt();
 
 
-                            long startHeight = batchMint ? 0 : list.get(6).asLong();
-                            long endHeight = batchMint ? 0 : list.get(7).asLong();
+                            long startHeight = (!batchMint || list.size() < 7) ? 0 : list.get(6).asLong();
+                            long endHeight = (!batchMint || list.size() < 8) ? 0 : list.get(7).asLong();
 
                             for (int i = 0; i < assets.length; i++) {
                                 Keccak.Digest256 digest = new Keccak.Digest256();
@@ -204,7 +205,7 @@ public class BlockJob {
                                 }
 
                                 if(!farmBaseDao.findByTranscationHashAndAssetAddressAndAccountAddressAndAgeAndTypeAndBlockHeightAndOperation(transaction.getHash().toHex()
-                                ,assets[i].getBytes(),users[i].getBytes(),age,mtypes[i],block.height,"Mint").isPresent()) {
+                                ,assets[i].toHex() ,users[i].toHex(),age,mtypes[i],block.height,"Mint").isPresent()) {
 
                                     farmBaseDao.save(
                                             FarmBaseEntity
@@ -214,11 +215,11 @@ public class BlockJob {
                                                     .transcationHash(transaction.getHash().toHex())
                                                     .smazeAccount(new BigDecimal(amounts[i].value()))
                                                     .age(age)
-                                                    .chainId(String.valueOf(chainId))
-                                                    .assetAddress(assets[i].getBytes())
+                                                    .chainId(chainId)
+                                                    .assetAddress(assets[i].toHex())
                                                     .type(mtypes[i])
-                                                    .accountAddress(users[i].getBytes())
-                                                    .mappingContractAddress(addr)
+                                                    .accountAddress(users[i].toHex())
+                                                    .mappingContractAddress(HexBytes.encode(addr))
                                                     .createdAt(new Date(transaction.getCreatedAt() * 1000))
                                                     .operation(batchMint ? "Mint" : "Burn")
                                                     .startHeight(startHeight)
@@ -228,12 +229,14 @@ public class BlockJob {
                                 }
                             }
                         }else if(method.equals("burn")) {
+
                             int chainId = list.get(0).asInt();
                             HexBytes asset = list.get(1).as(HexBytes.class);
                             int mtype = list.get(2).asInt();
                             HexBytes user = list.get(3).as(HexBytes.class);
                             Uint256 amount = list.get(4).as(Uint256.class);
                             age = list.get(5).asInt();
+
 
                             Keccak.Digest256 digestBurn = new Keccak.Digest256();
                             digestBurn.update((byte) 56);
@@ -251,7 +254,7 @@ public class BlockJob {
                                 id = 1;
                             }
                             if (!farmBaseDao.findByTranscationHashAndAssetAddressAndAccountAddressAndAgeAndTypeAndBlockHeightAndOperation(transaction.getHash().toHex()
-                                    , asset.getBytes(), user.getBytes(), age,mtype, block.height, "Burn").isPresent()) {
+                                    , asset.toHex(), user.toHex(), age,mtype, block.height, "Burn").isPresent()) {
 
                                 farmBaseDao.save(FarmBaseEntity.builder()
                                         .FarmBaseId(id)
@@ -259,11 +262,11 @@ public class BlockJob {
                                         .transcationHash(transaction.getHash().toHex())
                                         .smazeAccount(new BigDecimal(amount.value()))
                                         .age(age)
-                                        .chainId(String.valueOf(chainId))
-                                        .assetAddress(asset.getBytes())
+                                        .chainId(chainId)
+                                        .assetAddress(asset.toHex())
                                         .type(mtype)
-                                        .accountAddress(user.getBytes())
-                                        .mappingContractAddress(addrBurn)
+                                        .accountAddress(user.toHex())
+                                        .mappingContractAddress(HexBytes.encode(addrBurn))
                                         .createdAt(new Date(transaction.getCreatedAt() * 1000))
                                         .operation("Burn")
                                         .startHeight(0)
