@@ -13,6 +13,8 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
+
+
 server:
   port: 9092
 

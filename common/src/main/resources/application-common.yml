@@ -1,7 +1,7 @@
 spring:
   datasource:
-      url: ${DATA_SOURCE_URL:jdbc:postgresql://192.168.1.13:5432/tds_test}
-      username: ${DB_USERNAME:tds}
+      url: ${DATA_SOURCE_URL:jdbc:postgresql://192.168.1.138:5432/tdos}
+      username: ${DB_USERNAME:postgres}
       password: ${DB_PASSWORD:123456}
 #      schema: classpath:db-migration.sql
 #      initialization-mode: ${DB_INIT_MODE:always}
@@ -24,4 +24,4 @@ spring:
 
 
 dandelion:
-  peers: ${NODE_URL:http://192.168.1.13:7011}
+  peers: ${NODE_URL:http://192.168.1.188:7012}

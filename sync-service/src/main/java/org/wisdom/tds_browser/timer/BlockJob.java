@@ -58,7 +58,14 @@ public class BlockJob {
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private static final String contractAddress = "9195d579008279df4b0404174d6d9e916739e431";
+    private static String contractAddress = "9195d579008279df4b0404174d6d9e916739e431";
+    
+    static {
+        String addr = System.getenv("FARMBASE_CONTRACT_ADDRESS").toLowerCase();
+        if ( addr != null && !addr.isEmpty()) {
+            contractAddress = addr;
+        }
+    }
 
     @PostConstruct
     public void init() {
