@@ -2,10 +2,7 @@ package org.wisdom.tds_browser.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.wisdom.tds_browser.bean.Abi;
-import org.wisdom.tds_browser.bean.Block;
-import org.wisdom.tds_browser.bean.Contract;
-import org.wisdom.tds_browser.bean.Pair;
+import org.wisdom.tds_browser.bean.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,4 +50,9 @@ public interface CoreRepository {
     String getAccount(String addressOrPublicKey);
 
     String getVersion();
+
+    List<MazeProfit> getFarmnaseMazeProfitList(String txId,String accountAddress,int type,String assetAddress);
+
+    List<MazeProfit> getAll();
+
 }

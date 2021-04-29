@@ -9,6 +9,7 @@ import org.wisdom.tds_browser.service.CoreRepository;
 import org.wisdom.tds_browser.tool.PageTool;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -86,6 +87,25 @@ public class ContractController {
     @ResponseBody
     public APIResult<String> getVersion() {
         return APIResult.newSuccess(coreRepository.getVersion());
+    }
+
+    @GetMapping("/get_farmbase_maze_profit_list")
+    @ResponseBody
+    public APIResult<Page<MazeProfit>> getFarmbaseMazeProfitList(@RequestParam(value = "tx_id")String txId,
+                                                                 @RequestParam(value = "account_address")String accountAddress,
+                                                                 @RequestParam(value = "type")int type,
+                                                                 @RequestParam(value = "asset_address")String assetAddress,
+                                                                 @RequestParam(value = "per_page") Integer perPage,
+                                                                 @RequestParam(value = "page") Integer page) {
+        return  APIResult.newSuccess(PageTool.getPageList(coreRepository.getFarmnaseMazeProfitList(txId,accountAddress,type,assetAddress),page,perPage));
+    }
+
+    @GetMapping("/test")
+    @ResponseBody
+    public APIResult<Page<MazeProfit>> getAll(
+                                                                 @RequestParam(value = "per_page") Integer perPage,
+                                                                 @RequestParam(value = "page") Integer page) {
+        return  APIResult.newSuccess(PageTool.getPageList(coreRepository.getAll(),page,perPage));
     }
 
 }

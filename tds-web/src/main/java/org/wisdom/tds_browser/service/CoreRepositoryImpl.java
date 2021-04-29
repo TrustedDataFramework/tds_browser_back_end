@@ -6,22 +6,13 @@ import org.bouncycastle.util.encoders.Hex;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-import org.wisdom.tds_browser.bean.Abi;
-import org.wisdom.tds_browser.bean.Block;
-import org.wisdom.tds_browser.bean.Contract;
-import org.wisdom.tds_browser.bean.Pair;
-import org.wisdom.tds_browser.dao.ContractDao;
-import org.wisdom.tds_browser.dao.HeaderDao;
-import org.wisdom.tds_browser.dao.SyncHeightDao;
-import org.wisdom.tds_browser.dao.TransactionDao;
-import org.wisdom.tds_browser.entity.ContractEntity;
-import org.wisdom.tds_browser.entity.HeaderEntity;
-import org.wisdom.tds_browser.entity.SyncHeightEntity;
-import org.wisdom.tds_browser.entity.TransactionEntity;
+import org.wisdom.tds_browser.bean.*;
+import org.wisdom.tds_browser.dao.*;
+import org.wisdom.tds_browser.entity.*;
 import org.wisdom.tds_browser.tool.NodeTool;
 
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -36,17 +27,19 @@ public class CoreRepositoryImpl implements CoreRepository {
     private final ContractDao contractDao;
     private final SyncHeightDao syncHeightDao;
     private final NodeTool nodeTool;
+    private final FarmBaseDao farmBaseDao;
 
     public CoreRepositoryImpl(HeaderDao headerDao,
                               ContractDao contractDao,
                               TransactionDao transactionDao,
                               SyncHeightDao syncHeightDao,
-                              NodeTool nodeTool) {
+                              NodeTool nodeTool, FarmBaseDao farmBaseDao) {
         this.headerDao = headerDao;
         this.transactionDao = transactionDao;
         this.contractDao = contractDao;
         this.syncHeightDao = syncHeightDao;
         this.nodeTool = nodeTool;
+        this.farmBaseDao = farmBaseDao;
     }
 
     @Override
@@ -352,5 +345,63 @@ public class CoreRepositoryImpl implements CoreRepository {
     @Override
     public String getVersion(){
         return  "v1.0.0";
-    };
+    }
+
+    @Override
+    public List<MazeProfit> getFarmnaseMazeProfitList(String txid,String accountAddress,int type,String assetAddress) {
+        List<MazeProfit> list = new ArrayList<>();
+        List<FarmBaseEntity> batchMintEntities = farmBaseDao.findByAccountAddressAndTypeAndChainIdAndAssetAddress(Hex.decode(accountAddress), type,txid,Hex.decode(assetAddress));
+        list = batchMintEntities.stream().map(x ->
+                MazeProfit.builder()
+                        .accountAddress(Hex.toHexString(x.accountAddress))
+                        .age(x.age)
+                        .smazeAccount(x.smazeAccount)
+                        .assetAddress(Hex.toHexString(x.assetAddress))
+                        .blockHeight(x.blockHeight)
+                        .mappingContractAddress(Hex.toHexString(x.mappingContractAddress))
+                        .transcationHash(x.transcationHash)
+                        .chainId(x.chainId)
+                        .type(x.type)
+                        .createdAt(x.createdAt)
+                        .id(x.FarmBaseId)
+                        .operation(x.operation)
+                        .startHeight(x.startHeight)
+                        .endHeight(x.endHeight)
+                        .build()
+        ).collect(Collectors.toList());
+        return list;
+    }
+
+    @Override
+    public List<MazeProfit> getAll() {
+        return farmBaseDao.findAll().stream().map(x ->
+                MazeProfit.builder()
+                        .accountAddress(Hex.toHexString(x.accountAddress))
+                        .age(x.age)
+                        .smazeAccount(x.smazeAccount)
+                        .assetAddress(Hex.toHexString(x.assetAddress))
+                        .blockHeight(x.blockHeight)
+                        .mappingContractAddress(Hex.toHexString(x.mappingContractAddress))
+                        .transcationHash(x.transcationHash)
+                        .chainId(x.chainId)
+                        .type(x.type)
+                        .createdAt(x.createdAt)
+                        .id(x.FarmBaseId)
+                        .operation(x.operation)
+                        .startHeight(x.startHeight)
+                        .endHeight(x.endHeight)
+                        .build()
+        ).collect(Collectors.toList());
+    }
+
+//    @Override
+//    public List<MazeProfit> getlist() {
+//        List<BatchMintEntity> list1 = batchMintDao.findAll();
+//        for(int i = 0;i<list1.size();i++){
+//            String a = Hex.toHexString(list1.get(i).accountAddress);
+//            System.out.println("==============="+a);
+//        }
+//        List<MazeProfit> list = new ArrayList<>();
+//        return list;
+//    }
 }
