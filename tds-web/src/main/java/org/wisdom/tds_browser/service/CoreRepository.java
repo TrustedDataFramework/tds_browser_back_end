@@ -35,7 +35,7 @@ public interface CoreRepository {
 
     Contract getContractByHash(String hash);
 
-    Pair<Boolean, String>  getPayloadByAddress(String address);
+//    Pair<Boolean, String>  getPayloadByAddress(String address);
 
     String getCodeByAddress(String address);
 
@@ -50,10 +50,4 @@ public interface CoreRepository {
     String getAccount(String addressOrPublicKey);
 
     String getVersion();
-
-    List<MazeProfit> getFarmnaseMazeProfitList(int chainId,String accountAddress,int type,String assetAddress);
-
-    List<MazeProfit> getAll();
-
-    MazeProfit getByMaxAge(String assetAddress, int type, String accountAddress);
 }

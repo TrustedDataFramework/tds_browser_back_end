@@ -4,12 +4,21 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.kevinsawicki.http.HttpRequest;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameterNumber;
+import org.web3j.protocol.core.methods.response.EthBlock;
+import org.web3j.protocol.core.methods.response.EthBlockNumber;
+import org.web3j.protocol.http.HttpService;
 import org.wisdom.tds_browser.data.Block;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.wisdom.tds_browser.entity.Mapping;
 
 import javax.annotation.PostConstruct;
+import java.io.IOError;
+import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,10 +34,13 @@ public class NodeTool {
 
     public String nodeUrl;
 
+    public Web3j web3j;
+
     public NodeTool(@Value("${dandelion.peers}")
                             String peers) {
         this.peers = peers.replaceAll(" ", "").split(",");
         this.nodeUrl = this.peers[0];
+        this.web3j = Web3j.build(new HttpService(this.nodeUrl));
     }
 
     @PostConstruct
@@ -45,26 +57,41 @@ public class NodeTool {
     }
 
     public Block getBlocks(long height) {
-        String body = HttpRequest.get(nodeUrl + "/rpc/block/" + height)
-                .connectTimeout(5000)
-                .readTimeout(5000)
-                .body();
-        JSONObject jo = (JSONObject) JSON.parseObject(body).get("data");
-        Block block = JSON.parseObject(jo.toJSONString(), Block.class);
-        if (block.body == null) {
-            return block;
+
+        try {
+            org.web3j.protocol.core.methods.response.EthBlock.Block block =
+                    this.web3j.ethGetBlockByNumber(() ->
+                            new DefaultBlockParameterNumber(height).getValue(), true).send().getBlock();
+           return Mapping.convertBlock(block);
+        } catch (IOException e) {
+            throw new IOError(e);
         }
-        JSONArray raw = jo.getJSONArray("body");
-        block.rawData = raw.toJavaList(String.class);
-        for (int i = 0; i < block.body.size(); i++) {
-            block.body.get(i).position = i;
-        }
-        return block;
+//        String body = HttpRequest.get(nodeUrl + "/rpc/block/" + height)
+//                .connectTimeout(5000)
+//                .readTimeout(5000)
+//                .body();
+//        JSONObject jo = (JSONObject) JSON.parseObject(body).get("data");
+//        Block block = JSON.parseObject(jo.toJSONString(), Block.class);
+//        if (block.body == null) {
+//            return block;
+//        }
+//        JSONArray raw = jo.getJSONArray("body");
+//        block.rawData = raw.toJavaList(String.class);
+//        for (int i = 0; i < block.body.size(); i++) {
+//            block.body.get(i).position = i;
+//        }
+//        return block;
     }
 
     public long getNodeHeight() {
-        String body = HttpRequest.get(nodeUrl + "/rpc/header/-1").body();
-        return JSON.parseObject(body).getJSONObject("data").getLong("height");
+
+        try {
+            return this.web3j.ethBlockNumber().send().getBlockNumber().longValue();
+        } catch (IOException e) {
+            throw new IOError(e);
+        }
+//        String body = HttpRequest.get(nodeUrl + "/rpc/header/-1").body();
+//        return JSON.parseObject(body).getJSONObject("data").getLong("height");
     }
 
     public String stat() {

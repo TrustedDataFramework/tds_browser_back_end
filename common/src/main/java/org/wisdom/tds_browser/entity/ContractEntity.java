@@ -36,13 +36,13 @@ public class ContractEntity {
     public String txHash;
 
 
-    @Column(name = COLUMN_BINARY, nullable = false, length = Short.MAX_VALUE)
+    @Column(name = COLUMN_BINARY, length = Integer.MAX_VALUE)
     public byte[] binary;
 
-    @Column(name = COLUMN_ABI, nullable = false)
+    @Column(name = COLUMN_ABI)
     public byte[] abi;
 
-    @Column(name = COLUMN_CODE, length = Short.MAX_VALUE)
+    @Column(name = COLUMN_CODE, length = Integer.MAX_VALUE)
     public byte[] code;
 
     @Column(name = COLUMN_HEIGHT, nullable = false)
@@ -54,9 +54,9 @@ public class ContractEntity {
     @Column(name = COLUMN_TX_TO)
     public String to;
 
-    @Column(name = COLUMN_TX_AMOUNT, nullable = false)
+    @Column(name = COLUMN_TX_AMOUNT)
     public long amount;
 
-    @Column(name = COLUMN_CREATED_AT, nullable = false)
+    @Column(name = COLUMN_CREATED_AT)
     public Date createdAt;
 }

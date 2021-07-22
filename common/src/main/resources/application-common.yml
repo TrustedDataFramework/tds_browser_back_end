@@ -1,17 +1,24 @@
 spring:
   datasource:
-      url: ${DATA_SOURCE_URL:jdbc:postgresql://192.168.1.138:5432/tdos}
-      username: ${DB_USERNAME:postgres}
-      password: ${DB_PASSWORD:123456}
-#      schema: classpath:db-migration.sql
-#      initialization-mode: ${DB_INIT_MODE:always}
+    url: ${DATA_SOURCE_URL:jdbc:h2:./h2/h2;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE}
+#    username: ${DB_USERNAME:postgres}
+#    password: ${DB_PASSWORD:123123liu}
+    schema: classpath:db-migration.sql
+    driverClassName: org.h2.Driver
+    separator: ;
 
+  h2:
+    console:
+      settings:
+        web-allow-others: true
+      enabled: false
+      path: /h2-console
 
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
       connection:
         release_mode: 'after_statement'
     properties.hibernate.temp.use_jdbc_metadata_defaults: false
@@ -24,4 +31,4 @@ spring:
 
 
 dandelion:
-  peers: ${NODE_URL:http://192.168.1.188:7012}
+  peers: ${NODE_URL:http://192.168.1.188:7010}

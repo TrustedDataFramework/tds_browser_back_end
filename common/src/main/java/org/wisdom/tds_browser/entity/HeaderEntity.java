@@ -25,16 +25,13 @@ public class HeaderEntity {
     static final String COLUMN_TRANSACTIONS_ROOT = "tx_root";
     static final String COLUMN_STATE_ROOT = "state_root";
     static final String COLUMN_CREATED_AT = "created_at";
-    static final String COLUMN_PAYLOAD = "payload";
+    static final String COLUMN_EXTRA_DATA = "extra_data";
     static final String COLUMN_SIZE = "block_size";
 
 
     @Column(name = COLUMN_HASH, nullable = false)
     @Id
     public String blockHash;
-
-    @Column(name = COLUMN_VERSION, nullable = false)
-    public long version;
 
     @Column(name = COLUMN_HASH_PREV, nullable = false)
     public String hashPrevBlock;
@@ -51,10 +48,10 @@ public class HeaderEntity {
     @Column(name = COLUMN_STATE_ROOT, nullable = false)
     public String stateRoot;
 
-    @Column(name = COLUMN_PAYLOAD, nullable = false, length = Short.MAX_VALUE)
-    public byte[] payload;
+    @Column(name = COLUMN_EXTRA_DATA)
+    public String extraData;
 
-    @Column(name = COLUMN_CREATED_AT, nullable = false)
+    @Column(name = COLUMN_CREATED_AT)
     public Date createdAt;
 
 }

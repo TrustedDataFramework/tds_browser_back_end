@@ -6,17 +6,15 @@ import org.bouncycastle.util.encoders.Hex;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.wisdom.tds_browser.bean.*;
 import org.wisdom.tds_browser.dao.*;
 import org.wisdom.tds_browser.entity.*;
 import org.wisdom.tds_browser.tool.NodeTool;
 
-
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j(topic = "core")
@@ -28,19 +26,17 @@ public class CoreRepositoryImpl implements CoreRepository {
     private final ContractDao contractDao;
     private final SyncHeightDao syncHeightDao;
     private final NodeTool nodeTool;
-    private final FarmBaseDao farmBaseDao;
 
     public CoreRepositoryImpl(HeaderDao headerDao,
                               ContractDao contractDao,
                               TransactionDao transactionDao,
                               SyncHeightDao syncHeightDao,
-                              NodeTool nodeTool, FarmBaseDao farmBaseDao) {
+                              NodeTool nodeTool) {
         this.headerDao = headerDao;
         this.transactionDao = transactionDao;
         this.contractDao = contractDao;
         this.syncHeightDao = syncHeightDao;
         this.nodeTool = nodeTool;
-        this.farmBaseDao = farmBaseDao;
     }
 
     @Override
@@ -66,7 +62,7 @@ public class CoreRepositoryImpl implements CoreRepository {
                     .to(x.to)
                     .height(x.height)
                     .txHash(x.txHash)
-                    .fee(entity.fee)
+                    .gas(entity.gas)
                     .createdAt(entity.createdAt)
                     .build();
         }).sorted(Comparator.comparing(Contract::getHeight).reversed()).collect(Collectors.toList());
@@ -80,17 +76,14 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .from(x.from)
                         .gasPrice(x.gasPrice)
                         .nonce(x.nonce)
-                        .payload(Hex.toHexString(x.payload))
-                        .signature(x.signature)
+                        .r(x.r)
+                        .s(x.s)
+                        .v(x.v)
                         .hash(x.txHash)
-                        .type(x.type)
-                        .version(x.version)
                         .to(x.to)
-                        .fee(x.fee)
+                        .gas(x.gas)
                         .createdAt(x.createdAt)
-                        .gasLimit(x.gasLimit)
                         .position(x.position)
-                        .size(x.size)
                         .build()).sorted(Comparator.comparing(Block.Transaction::getCreatedAt).reversed()).collect(Collectors.toList());
     }
 
@@ -102,18 +95,16 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .from(x.from)
                         .gasPrice(x.gasPrice)
                         .nonce(x.nonce)
-                        .payload(Hex.toHexString(x.payload))
-                        .signature(x.signature)
+                        .r(x.r)
+                        .s(x.s)
+                        .v(x.v)
                         .hash(x.txHash)
                         .type(x.type)
-                        .version(x.version)
                         .to(x.to)
-                        .fee(x.fee)
+                        .gas(x.gas)
                         .blockHeight(headerDao.findByBlockHash(x.blockHash).orElseThrow(RuntimeException::new).height)
                         .createdAt(x.createdAt)
-                        .gasLimit(x.gasLimit)
                         .position(x.position)
-                        .size(x.size)
                         .build()).collect(Collectors.toList());
     }
 
@@ -125,18 +116,16 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .from(x.from)
                         .gasPrice(x.gasPrice)
                         .nonce(x.nonce)
-                        .payload(Hex.toHexString(x.payload))
-                        .signature(x.signature)
+                        .r(x.r)
+                        .s(x.s)
+                        .v(x.v)
                         .hash(x.txHash)
                         .type(x.type)
-                        .version(x.version)
                         .to(x.to)
-                        .fee(x.fee)
+                        .gas(x.gas)
                         .createdAt(x.createdAt)
-                        .gasLimit(x.gasLimit)
                         .position(x.position)
                         .blockHeight(headerDao.findByBlockHash(x.blockHash).orElseThrow(RuntimeException::new).height)
-                        .size(x.size)
                         .build()).collect(Collectors.toList());
     }
 
@@ -175,18 +164,16 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .from(x.from)
                         .gasPrice(x.gasPrice)
                         .nonce(x.nonce)
-                        .payload(Hex.toHexString(x.payload))
-                        .signature(x.signature)
+                        .r(x.r)
+                        .s(x.s)
+                        .v(x.v)
                         .hash(x.txHash)
                         .type(x.type)
-                        .version(x.version)
                         .to(x.to)
-                        .fee(x.fee)
+                        .gas(x.gas)
                         .createdAt(x.createdAt)
-                        .gasLimit(x.gasLimit)
                         .blockHeight(x.height)
                         .position(x.position)
-                        .size(x.size)
                         .build());
     }
 
@@ -207,20 +194,20 @@ public class CoreRepositoryImpl implements CoreRepository {
                 .to(x.to)
                 .height(x.height)
                 .txHash(x.txHash)
-                .fee(entity.fee)
+                .gas(entity.gas)
                 .createdAt(entity.createdAt)
                 .build();
     }
 
-    @Override
-    public Pair<Boolean, String> getPayloadByAddress(String address) {
-        Optional<ContractEntity> optional = contractDao.findById(address);
-        if (!optional.isPresent()) {
-            return Pair.with(false, "contract address is not exist");
-        }
-        Optional<TransactionEntity> entity = transactionDao.findById(optional.get().txHash);
-        return Pair.with(true, entity.map(contractEntity -> Hex.toHexString(transactionDao.findById(contractEntity.txHash).orElseThrow(RuntimeException::new).payload)));
-    }
+//    @Override
+//    public Pair<Boolean, String> getPayloadByAddress(String address) {
+//        Optional<ContractEntity> optional = contractDao.findById(address);
+//        if (!optional.isPresent()) {
+//            return Pair.with(false, "contract address is not exist");
+//        }
+//        Optional<TransactionEntity> entity = transactionDao.findById(optional.get().txHash);
+//        return Pair.with(true, entity.map(contractEntity -> Hex.toHexString(transactionDao.findById(contractEntity.txHash).orElseThrow(RuntimeException::new).payload)));
+//    }
 
     @Override
     public String getCodeByAddress(String address) {
@@ -253,18 +240,16 @@ public class CoreRepositoryImpl implements CoreRepository {
                         .from(x.from)
                         .gasPrice(x.gasPrice)
                         .nonce(x.nonce)
-                        .payload(Hex.toHexString(x.payload))
-                        .signature(x.signature)
+                        .r(x.r)
+                        .s(x.s)
+                        .v(x.v)
                         .hash(x.txHash)
                         .type(x.type)
-                        .version(x.version)
                         .blockHeight(headerDao.findByBlockHash(x.blockHash).orElseThrow(RuntimeException::new).height)
                         .to(x.to)
-                        .fee(x.fee)
                         .createdAt(x.createdAt)
-                        .gasLimit(x.gasLimit)
+                        .gas(x.gas)
                         .position(x.position)
-                        .size(x.size)
                         .build());
     }
 
@@ -293,33 +278,36 @@ public class CoreRepositoryImpl implements CoreRepository {
                 .from(x.from)
                 .gasPrice(x.gasPrice)
                 .nonce(x.nonce)
-                .payload(Hex.toHexString(x.payload))
-                .signature(x.signature)
+                .r(x.r)
+                .s(x.s)
+                .v(x.v)
                 .hash(x.txHash)
                 .type(x.type)
-                .version(x.version)
                 .to(x.to)
-                .fee(x.fee)
+                .gas(x.gas)
                 .createdAt(x.createdAt)
-                .gasLimit(x.gasLimit)
                 .position(x.position)
-                .size(x.size)
                 .build();
     }
 
     private Block convertBlock(HeaderEntity entity) {
         List<TransactionEntity> entities = transactionDao.findByBlockHash(entity.blockHash);
+        long allFee = 0;
+        for (TransactionEntity transactionEntity : entities) {
+            if (!StringUtils.isEmpty(transactionEntity.gas)) {
+                allFee = allFee + Long.parseLong(transactionEntity.gas);
+            }
+        }
         return Block.builder()
                 .createdAt(entity.getCreatedAt())
                 .hash(entity.blockHash)
                 .hashPrev(entity.hashPrevBlock)
                 .height(entity.height)
-                .payload(Hex.toHexString(entity.payload))
+                .extraData(entity.extraData)
                 .size(entity.size)
                 .stateRoot(entity.stateRoot)
                 .transactionsRoot(entity.transactionsRoot)
-                .version(entity.version)
-                .allFee(entities.size() > 0 ? entities.get(0).fee : 0)
+                .allFee(allFee)
                 .minerAddress(entities.size() > 0 ? entities.get(0).to : null)
                 .body(entities.stream().map(x ->
                         Block.Transaction.builder()
@@ -327,17 +315,15 @@ public class CoreRepositoryImpl implements CoreRepository {
                                 .from(x.from)
                                 .gasPrice(x.gasPrice)
                                 .nonce(x.nonce)
-                                .payload(Hex.toHexString(x.payload))
-                                .signature(x.signature)
+                                .r(x.r)
+                                .s(x.s)
+                                .v(x.v)
                                 .hash(x.txHash)
                                 .type(x.type)
-                                .version(x.version)
                                 .to(x.to)
-                                .fee(x.fee)
+                                .gas(x.gas)
                                 .createdAt(x.createdAt)
-                                .gasLimit(x.gasLimit)
                                 .position(x.position)
-                                .size(x.size)
                                 .build())
                         .collect(Collectors.toList()))
                 .build();
@@ -348,72 +334,5 @@ public class CoreRepositoryImpl implements CoreRepository {
         return  "v1.0.0";
     }
 
-    @Override
-    public List<MazeProfit> getFarmnaseMazeProfitList(int chainId,String accountAddress,int type,String assetAddress) {
-        List<MazeProfit> list = new ArrayList<>();
-        List<FarmBaseEntity> batchMintEntities;
-        if(type == 2){
-            batchMintEntities = farmBaseDao.findByAccountAddressAndTypeAndChainId(accountAddress, type, chainId);
-        } else {
-            batchMintEntities = farmBaseDao.findByAccountAddressAndTypeAndChainIdAndAssetAddress(accountAddress, type, chainId, assetAddress);
-        }
-        list = batchMintEntities.stream().map(mapper).collect(Collectors.toList());
-        return list;
-    }
 
-    @Override
-    public List<MazeProfit> getAll() {
-        return farmBaseDao.findAll().stream().map(mapper).collect(Collectors.toList());
-    }
-
-    private Function<FarmBaseEntity, MazeProfit> mapper = x -> MazeProfit.builder()
-            .accountAddress(x.accountAddress)
-            .age(x.age)
-            .smazeAccount(x.smazeAccount)
-            .assetAddress(x.assetAddress)
-            .blockHeight(x.blockHeight)
-            .mappingContractAddress(x.mappingContractAddress)
-            .transcationHash(x.transcationHash)
-            .chainId(Integer.toString(x.chainId))
-            .type(x.type)
-            .createdAt(x.createdAt)
-            .id(x.FarmBaseId)
-            .operation(x.operation)
-            .startHeight(x.startHeight)
-            .endHeight(x.endHeight)
-            .build();
-
-    @Override
-    public MazeProfit getByMaxAge(String assetAddress, int type, String accountAddress) {
-        Optional<Integer> o;
-        List<FarmBaseEntity> list;
-        if(type == 2){
-            o = farmBaseDao.getMaxAgeBylpMaze(type, accountAddress);
-        } else{
-            o = farmBaseDao.getMaxAge(assetAddress, type, accountAddress);
-        }
-
-
-        if (!o.isPresent())
-            return null;
-        int age = o.get();
-        if(type == 2){
-            list = farmBaseDao.getByMaxAgeBylpMaze(type, accountAddress, age);
-        }else{
-            list = farmBaseDao.getByMaxAge(assetAddress, type, accountAddress, age);
-        }
-
-        FarmBaseEntity e = list.get(0);
-        return mapper.apply(e);
-    }
-//    @Override
-//    public List<MazeProfit> getlist() {
-//        List<BatchMintEntity> list1 = batchMintDao.findAll();
-//        for(int i = 0;i<list1.size();i++){
-//            String a = Hex.toHexString(list1.get(i).accountAddress);
-//            System.out.println("==============="+a);
-//        }
-//        List<MazeProfit> list = new ArrayList<>();
-//        return list;
-//    }
 }

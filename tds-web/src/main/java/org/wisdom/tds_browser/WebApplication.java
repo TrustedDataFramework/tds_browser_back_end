@@ -35,7 +35,7 @@ public class WebApplication {
         FileUtils.setClassLoader(ClassUtils.getDefaultClassLoader());
         SpringApplication app = new SpringApplication(WebApplication.class);
         app.addInitializers(applicationContext -> {
-            loadCryptoContext();
+//            loadCryptoContext();
         });
         app.run(args);
     }

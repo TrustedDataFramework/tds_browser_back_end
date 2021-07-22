@@ -24,7 +24,7 @@ public class Contract  implements Serializable {
     @JsonProperty("tx_hash")
     public String txHash;
 
-    public long fee;
+    public String gas;
 
     @JsonProperty("created_at")
     public Date createdAt;

@@ -36,15 +36,15 @@ public class ContractController {
         return APIResult.newFailed(null);
     }
 
-    @GetMapping("/get_payload_by_address")
-    @ResponseBody
-    public APIResult<String> getPayloadByAddress(@RequestParam(value = "address") String address) {
-        Pair<Boolean, String> pair = coreRepository.getPayloadByAddress(address);
-        if (pair.key) {
-            return APIResult.newSuccess(pair.value);
-        }
-        return APIResult.newFailed(pair.value);
-    }
+//    @GetMapping("/get_payload_by_address")
+//    @ResponseBody
+//    public APIResult<String> getPayloadByAddress(@RequestParam(value = "address") String address) {
+//        Pair<Boolean, String> pair = coreRepository.getPayloadByAddress(address);
+//        if (pair.key) {
+//            return APIResult.newSuccess(pair.value);
+//        }
+//        return APIResult.newFailed(pair.value);
+//    }
 
 
     @GetMapping("/get_code_by_address")
@@ -96,33 +96,5 @@ public class ContractController {
     public APIResult<String> getVersion() {
         return APIResult.newSuccess(coreRepository.getVersion());
     }
-
-    @GetMapping("/get_farmbase_maze_profit_list")
-    @ResponseBody
-    public APIResult<Page<MazeProfit>> getFarmbaseMazeProfitList(@RequestParam(value = "tx_id") Integer chainId,
-                                                                 @RequestParam(value = "account_address")String accountAddress,
-                                                                 @RequestParam(value = "type")int type,
-                                                                 @RequestParam(value = "asset_address")String assetAddress,
-                                                                 @RequestParam(value = "per_page") Integer perPage,
-                                                                 @RequestParam(value = "page") Integer page) {
-        return  APIResult.newSuccess(PageTool.getPageList(coreRepository.getFarmnaseMazeProfitList(chainId, normalizeHex(accountAddress),type, normalizeHex(assetAddress)),page,perPage));
-    }
-
-    @GetMapping("/test")
-    @ResponseBody
-    public APIResult<Page<MazeProfit>> getAll(@RequestParam(value = "per_page") Integer perPage,
-                                             @RequestParam(value = "page") Integer page) {
-        return  APIResult.newSuccess(PageTool.getPageList(coreRepository.getAll(),page,perPage));
-    }
-
-    @GetMapping("/getHeightByMaxAge")
-    @ResponseBody
-    public APIResult<MazeProfit> getHeightByMaxAge(@RequestParam(value = "account_address")String accountAddress,
-                                                         @RequestParam(value = "type")int type,
-                                                         @RequestParam(value = "asset_address")String assetAddress) {
-        return  APIResult.newSuccess(coreRepository.getByMaxAge(normalizeHex(assetAddress) ,type, normalizeHex(accountAddress)));
-    }
-
-
 
 }

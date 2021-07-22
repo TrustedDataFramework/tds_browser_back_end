@@ -15,9 +15,9 @@ public interface TransactionDao extends JpaRepository<TransactionEntity, String>
 
     List<TransactionEntity> findByTo(String to);
 
-    Page<TransactionEntity> findByTypeNot(int type, Pageable pageable);
+    Page<TransactionEntity> findByTypeNot(long type, Pageable pageable);
 
-    List<TransactionEntity> findByTypeAndTo(int type, String to);
+    List<TransactionEntity> findByTypeAndTo(long type, String to);
 
     Page<TransactionEntity> findByFromOrTo(String from, String to , Pageable pageable);
 

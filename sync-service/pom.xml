@@ -31,11 +31,6 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.tdf</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0.4</version>
-        </dependency>
-        <dependency>
             <groupId>org.wisdom</groupId>
             <artifactId>common-model</artifactId>
             <version>1.0.0</version>
@@ -81,7 +76,11 @@
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.61</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
     </dependencies>
 

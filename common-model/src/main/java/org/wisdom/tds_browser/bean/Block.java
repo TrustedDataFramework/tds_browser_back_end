@@ -34,7 +34,8 @@ public class Block implements Serializable {
     @JsonProperty("transaction_root")
     public String transactionsRoot;
 
-    public String payload;
+    @JsonProperty("extra_data")
+    public String extraData;
 
     @JsonProperty("miner_address")
     public String minerAddress;
@@ -56,22 +57,19 @@ public class Block implements Serializable {
     @Getter
     public static class Transaction implements Serializable {
         public String hash;
-        public int version;
-        public int type;
-        public long nonce;
+        public long type;
+        public String nonce;
         public String from;
-        @JsonProperty("gas_limit")
-        public long gasLimit;
         @JsonProperty("gas_price")
-        public long gasPrice;
+        public String gasPrice;
         public long amount;
-        public String payload;
         public String to;
-        public String signature;
+        public String r;
+        public String s;
+        public long v;
         @JsonProperty("created_at")
         public Date createdAt;
-        public long fee;
-        public long size;
+        public String gas;
         public int position;
         @JsonProperty("block_height")
         public long blockHeight;
